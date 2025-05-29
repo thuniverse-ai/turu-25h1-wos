@@ -225,8 +225,8 @@ class AgentRunner:
             
             if show_step_log:
                 yield "\n"
-
-        yield response
+        if not show_step_log:
+            yield response
 
     async def abort(self):
         self.state = AgentState.ABORTING

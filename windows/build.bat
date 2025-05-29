@@ -13,7 +13,7 @@ exit /b
 REM Initialize global configurations
 pushd "%~dp0"
 call src\variables.bat
-call src\switch.bat
+call src\switch.bat qnn
 popd
 
 echo PWD: %cd%

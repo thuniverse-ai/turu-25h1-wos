@@ -1,2 +1,3 @@
+qai-appbuilder @ https://dl.thuniverse.ai/turu-25h1-wos/qai_appbuilder-2.32.0+kuwa-cp310-cp310-win_amd64.whl
 huggingface_hub[cli]
 transformers

@@ -219,6 +219,7 @@ pytorch-metric-learning==2.8.1  # via pyannote-audio
 pytz==2025.2              # via dateparser, pandas
 pywin32==310              # via oschmod
 pyyaml==6.0.2             # via accelerate, ctranslate2, datasets, gradio, gradio-i18n, huggingface-hub, hyperpyyaml, kuwa-executor, langchain, langchain-community, langchain-core, lightning, omegaconf, optuna, pyannote-database, pyannote-pipeline, python-i18n, pytorch-lightning, transformers, uvicorn
+qai-appbuilder @ https://dl.thuniverse.ai/turu-25h1-wos/qai_appbuilder-2.32.0+kuwa-cp310-cp310-win_amd64.whl  # via -r src/executor/qnn_genie/requirements.in
 qai-hub==0.29.0           # via qai-hub-models
 qai-hub-models==0.28.2    # via -r src/executor/speech_recognition/requirements-onnx.in
 rank-bm25==0.2.2          # via kuwa-rag
