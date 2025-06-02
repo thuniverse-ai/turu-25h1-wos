@@ -182,6 +182,7 @@ echo Installing n8n
 call npm.cmd install -g "n8n@1.73.1"
 
 REM Install dependency of Mermaid Tool
+echo Installing dependency of Mermaid Tool
 call npm.cmd install -g "@mermaid-js/mermaid-cli"
 
 REM Download Embedding Model

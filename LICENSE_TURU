@@ -1,0 +1,35 @@
+# The Turu License
+
+Copyright (c) 2024-present Thuniverse AI Inc.
+
+With regard to the Turu Software (including the software and associated documentation files):
+
+1. Use of the Turu Software in a production environment requires a valid Turu
+license corresponding to the intended usage, for you and any entity you
+represent.
+
+2. Subject to the above restriction regarding production use, you may copy and
+modify the Software for development, demonstration, and testing purposes without
+requiring a license. You may also publish patches to the Software.
+
+3. You acknowledge and agree that Turu and/or its licensors (as applicable)
+retain all right, title, and interest in and to any modifications and/or patches
+you create. Any use, copying, modification, display, distribution, or other
+exploitation of such modifications and/or patches is also subject to the
+requirement of a valid Turu license.
+
+4. No rights are granted except as expressly stated herein. Without limiting
+the foregoing, you are prohibited from copying, merging, publishing,
+distributing, sublicensing, or selling the Software, except as specifically
+permitted above.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+For all third party components incorporated into the Turu Software, those
+components are licensed under the original license provided by the owner of the
+applicable component.

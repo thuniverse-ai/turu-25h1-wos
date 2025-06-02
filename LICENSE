@@ -1,6 +1,25 @@
+Portions of this software are licensed as follows:
+
+1. Content of branches other than the main branch (i.e. "main") are not
+licensed.
+
+2. Source code files that contain "turu" in their filename or in their parent
+dirname are NOT licensed under the MIT License. To use source code files that
+contain "turu" in their filename or in their parent dirname you must hold a
+valid Turu License specifically allowing you access to such source code files
+and as defined in "LICENSE_TURU".
+
+3. All third party components incorporated into the Turu Software are licensed
+under the original license provided by the owner of the applicable component.
+
+4. Content outside of the above mentioned files or restrictions is available
+under the "MIT License" as defined below.
+
+------
+
 MIT License
 
-Copyright (c) 2024-present Kuwa AI
+Copyright (c) 2025 Kuwa AI
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
