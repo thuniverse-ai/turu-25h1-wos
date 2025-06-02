@@ -10,6 +10,7 @@ packages
 cache
 *.zip
 src/conf/migrations.txt
+src/conf/init_models.txt
 logs/
 .ssh/
 .gitconfig

@@ -111,6 +111,17 @@ call php artisan config:cache
 call php artisan config:clear
 popd
 
+if exist src\conf\init_models.txt (
+    echo Downloading models.
+    python src\download_hf_models.py src\conf\init_models.txt
+
+    if !errorlevel! equ 0 (
+        del src\conf\init_models.txt
+    )
+) else (
+    echo src\conf\init_models.txt not found. Skipping seeding.
+)
+
 REM Redis Server
 pushd packages\%redis_folder%
 del dump.rdb
