@@ -225,6 +225,7 @@ class AgentRunner:
             
             if show_step_log:
                 yield "\n"
+
         if not show_step_log:
             yield response
 
