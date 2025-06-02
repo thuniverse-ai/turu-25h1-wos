@@ -165,7 +165,17 @@ pushd ".."
 uv pip sync --system windows\src\requirements.txt.lock
 popd
 
-REM Install dependency of whisper
+ollama --versioni >NUL
+if !errorlevel! neq 0 (
+    echo Downloading Ollama
+    curl -L -C - -# -o packages\OllamaSetup.exe https://ollama.com/download/OllamaSetup.exe
+    echo Installing Ollama
+    call packages\OllamaSetup.exe /SILENT
+)
+echo Ollama installed.
+ollama --version
+
+echo Installing dependency of whisper
 call src\download_extract.bat %url_ffmpeg% packages\%ffmpeg_folder% packages\. ffmpeg.zip
 REM Install dependency of n8n
 echo Installing n8n
