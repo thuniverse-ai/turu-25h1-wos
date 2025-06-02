@@ -177,17 +177,22 @@ ollama --version
 
 echo Installing dependency of whisper
 call src\download_extract.bat %url_ffmpeg% packages\%ffmpeg_folder% packages\. ffmpeg.zip
-REM Install dependency of n8n
-echo Installing n8n
-call npm.cmd install -g "n8n@1.73.1"
+
+REM Install dependency of stable diffusion
+call src\download_extract.bat "https://dl.thuniverse.ai/turu-25h1-wos/qnn-stable-diffusion.zip" executors\qnn-stable-diffusion executors\. qnn-stable-diffusion.zip
+
 
 REM Install dependency of Mermaid Tool
 echo Installing dependency of Mermaid Tool
 call npm.cmd install -g "@mermaid-js/mermaid-cli"
 
-REM Download Embedding Model
-echo Downloading the embedding model.
+REM Download Pre-integrated Model
+echo Downloading pre-integrated models.
 python ..\src\executor\docqa\download_model.py
+huggingface-cli.exe download thuniverse-ai/Llama-v3.2-3B-Chat-GENIE
+huggingface-cli.exe download thuniverse-ai/TAIDE-LX-8B-Chat-GENIE
+huggingface-cli.exe download thuniverse-ai/Phi-3.5-Mini-Instruct-GENIE
+huggingface-cli.exe download thuniverse-ai/Llama-v3.1-8B-Chat-GENIE
 
 REM Make Kuwa root
 echo Initializing the filesystem hierarchy of Kuwa.

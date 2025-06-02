@@ -29,7 +29,6 @@ confs=(
   "agent"
   "pipe"
   "mcp_client"
-  "n8n"
 )
 
 # Append "-f" before each element
