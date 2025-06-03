@@ -165,7 +165,7 @@ pushd ".."
 uv pip sync --system windows\src\requirements.txt.lock
 popd
 
-ollama --versioni >NUL
+ollama --version >NUL
 if !errorlevel! neq 0 (
     echo Downloading Ollama
     curl -L -C - -# -o packages\OllamaSetup.exe https://ollama.com/download/OllamaSetup.exe
