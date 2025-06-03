@@ -3,6 +3,7 @@ import argparse
 import asyncio
 import aiohttp
 import tqdm
+import logging
 from huggingface_hub import snapshot_download
 
 
@@ -39,7 +40,7 @@ async def download_repos_concurrently(repo_ids: list[str]):
             await asyncio.gather(*tasks)
 
 
-def main():
+async def main():
     parser = argparse.ArgumentParser(
         description="Download multiple Hugging Face repositories concurrently."
     )
@@ -61,12 +62,19 @@ def main():
         print(f"Error reading file: {e}")
         return
 
+    print("Models to download:\n- "+"\n- ".join(repo_ids))
+
 
     # Download the repositories concurrently.
-    asyncio.run(download_repos_concurrently(repo_ids))
+    await download_repos_concurrently(repo_ids)
 
     print("Download complete.")
 
 
 if __name__ == "__main__":
-    main()
+    logging.basicConfig(level=logging.INFO)
+    loop = asyncio.get_event_loop()
+    try:
+        loop.run_until_complete(main())
+    except KeyboardInterrupt:
+        print("Received exit, exiting")

@@ -18,7 +18,7 @@ AllowNoIcons=yes
 LicenseFile=../../LICENSE
 PrivilegesRequired=lowest
 OutputDir=.
-OutputBaseFilename=Kuwa-AIOS-Full-Installer
+OutputBaseFilename=Turu-25H1-WoS-Setup
 SetupIconFile={#MyAppIcon}
 Compression=lzma
 SolidCompression=yes
@@ -62,11 +62,11 @@ Name: "korean"; MessagesFile: "compiler:Languages\Korean.isl"
 ; Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
 
 [Components]
-Name: "product"; Description: "Product Components"; Types: full compact custom;Flags: fixed;
+Name: "product"; Description: "Core Components"; Types: full compact custom;Flags: fixed;
 Name: "product\Turu"; Description: "Turu"; Types:  full compact custom ;Flags: fixed;
 
-Name: "models"; Description: "Model Selection"; Types: full custom;Flags: fixed;
-Name: "models\Llama_v3_2_3B_Chat_GENIE"; Description: "Llama-v3.2-3B-Chat-GENIE"; Types: full compact custom; ExtraDiskSpaceRequired:2637074432;
+Name: "models"; Description: "On-device AI Models"; Types: full custom;Flags: fixed;
+Name: "models\Llama_v3_2_3B_Chat_GENIE"; Description: "Llama-v3.2-3B-Chat-GENIE"; Types: full compact custom; Flags: fixed; ExtraDiskSpaceRequired:2637074432;
 Name: "models\TAIDE_LX_8B_Chat_GENIE"; Description: "TAIDE-LX-8B-Chat-GENIE"; Types: full custom; ExtraDiskSpaceRequired:5143891968;
 Name: "models\Phi_3_5_Mini_Instruct_GENIE"; Description: "Phi-3.5-Mini-Instruct-GENIE"; Types: full custom; ExtraDiskSpaceRequired:2227830784;
 Name: "models\Llama_v3_1_8B_Chat_GENIE"; Description: "Llama-v3.1-8B-Chat-GENIE"; Types: full custom; ExtraDiskSpaceRequired:5131247616;
@@ -187,21 +187,23 @@ begin
     InitModelFile := ExpandConstant('{app}\windows\src\conf\init_models.txt');
     if WizardIsComponentSelected('models\Llama_v3_2_3B_Chat_GENIE') then
     begin
-      InitModels := InitModels + 'thuniverse-ai/Llama-v3.2-3B-Chat-GENIE' + #13#10
+      InitModels := InitModels + 'thuniverse-ai/Llama-v3.2-3B-Chat-GENIE' + #13#10;
     end;
     if WizardIsComponentSelected('models\Llama_v3_1_8B_Chat_GENIE') then
     begin
-      InitModels := InitModels + 'thuniverse-ai/Llama-v3.1-8B-Chat-GENIE' + #13#10
+      InitModels := InitModels + 'thuniverse-ai/Llama-v3.1-8B-Chat-GENIE' + #13#10;
     end;
     if WizardIsComponentSelected('models\Phi_3_5_Mini_Instruct_GENIE') then
     begin
-      InitModels := InitModels + 'thuniverse-ai/Phi-3.5-Mini-Instruct-GENIE' + #13#10
+      InitModels := InitModels + 'thuniverse-ai/Phi-3.5-Mini-Instruct-GENIE' + #13#10;
     end;
     if WizardIsComponentSelected('models\TAIDE_LX_8B_Chat_GENIE') then
     begin
-      InitModels := InitModels + 'thuniverse-ai/TAIDE-LX-8B-Chat-GENIE' + #13#10
+      InitModels := InitModels + 'thuniverse-ai/TAIDE-LX-8B-Chat-GENIE' + #13#10;
     end;
-    SaveStringToFile(InitModels, InitModelFile, False);
+    ForceDirectories(ExtractFilePath(InitModelFile));
+    SaveStringToFile(InitModelFile, InitModels, False);
+    Result := True;
   end
   else if CurPageID = AccountPage.ID then
   begin
