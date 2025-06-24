@@ -16,10 +16,7 @@ call src\switch.bat %1
 popd
 pushd "%~dp0"
 call src\variables.bat
-<<<<<<< HEAD
 call src\switch.bat qnn
-=======
->>>>>>> upstream/main
 popd
 
 echo PWD: %cd%
