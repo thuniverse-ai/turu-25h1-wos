@@ -6,6 +6,9 @@ if "%KUWA_ENV_INIT%" neq "" (exit /b)
 
 call src\getproxy.bat
 
+set HTTP_Server_Runtime=nginx
+REM set HTTP_Server_Runtime=apache
+
 REM Variables for RunHiddenConsole
 set "url_RunHiddenConsole=https://github.com/wenshui2008/RunHiddenConsole/releases/download/1.0/RunHiddenConsole.zip"
 for %%I in ("%url_RunHiddenConsole%") do set "filename_RunHiddenConsole=%%~nxI"
@@ -34,6 +37,18 @@ set "url_Nginx=https://nginx.org/download/nginx-1.26.3.zip"
 for %%I in ("%url_Nginx%") do set "filename_Nginx=%%~nxI"
 set "nginx_folder=%filename_Nginx:~0,-4%"
 for /f "tokens=2 delims=-" %%v in ("%filename_Nginx%") do set "version_Nginx=%%v"
+
+REM Variables for Apache
+set "url_Apache=https://www.apachelounge.com/download/VS17/binaries/httpd-2.4.63-250207-win64-VS17.zip"
+for %%I in ("%url_Apache%") do set "filename_Apache=%%~nxI"
+set "apache_folder=%filename_Apache:~0,-4%"
+for /f "tokens=2 delims=-" %%v in ("%filename_Apache%") do set "version_Apache=%%v"
+
+REM Variables for mod_fcgid
+set "url_mod_fcgid=https://www.apachelounge.com/download/VS17/modules/mod_fcgid-2.3.10-win64-VS17.zip"
+for %%I in ("%url_mod_fcgid%") do set "filename_mod_fcgid=%%~nxI"
+set "mod_fcgid_folder=%filename_mod_fcgid:~0,-4%"
+for /f "tokens=2 delims=-" %%v in ("%filename_mod_fcgid%") do set "version_mod_fcgid=%%v"
 
 REM Variables for Python 3.10.12
 set "url_Python=https://www.python.org/ftp/python/3.10.11/python-3.10.11-embed-amd64.zip"
@@ -84,7 +99,7 @@ REM Prepare packages folder
 mkdir packages 2>nul
 
 REM init env
-set "PATH=%~dp0\bin;%~dp0..\packages\;%~dp0..\packages\%xpdfreader_folder%\bin64;%~dp0..\packages\%python_folder%\Scripts;%~dp0..\packages\%python_folder%;%~dp0..\packages\%php_folder%;%~dp0..\packages\%node_folder%;%~dp0..\packages\%gitbash_folder%\cmd;%~dp0..\packages\%antiword_folder%\;%~dp0..\packages\%ffmpeg_folder%\bin;%PATH%"
+set "PATH=%~dp0\bin;%~dp0..\packages\;%~dp0..\packages\%python_folder%\Scripts;%~dp0..\packages\%python_folder%;%~dp0..\packages\%php_folder%;%~dp0..\packages\%node_folder%;%~dp0..\packages\%gitbash_folder%\cmd;%~dp0..\packages\%ffmpeg_folder%\bin;%PATH%"
 
 if "%1"=="no_migrate" (
     echo Skipped migration

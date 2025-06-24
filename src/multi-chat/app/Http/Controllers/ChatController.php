@@ -19,7 +19,6 @@ use App\Models\APIHistories;
 use App\Models\Histories;
 use App\Jobs\RequestChat;
 use App\Models\Feedback;
-use App\Jobs\ImportChat;
 use GuzzleHttp\Client;
 use App\Models\Chats;
 use App\Models\LLMs;

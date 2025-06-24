@@ -271,7 +271,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <hr class="agent-bot hidden my-4 border-gray-300 dark:border-gray-600">
                     <div class="agent-bot modelfile-toggle hidden w-full px-3 mt-2 flex justify-center items-center flex-wrap md:flex-nowrap"
                         id="process-bot">
@@ -374,9 +374,8 @@
                             <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                 for="bot-script">{{ __('store.bot.script') }}</label>
                             <div class="flex items-center">
-                                <textarea id="bot-script" type="text"
-                                    oninput="alterBotfile('script', $(this).val()); adjustTextareaRows(this);" rows="1" max-rows="4"
-                                    placeholder="{{ __('store.bot.script.label') }}"
+                                <textarea id="bot-script" type="text" oninput="alterBotfile('script', $(this).val()); adjustTextareaRows(this);"
+                                    rows="1" max-rows="4" placeholder="{{ __('store.bot.script.label') }}"
                                     class="bg-gray-50 border scrollbar border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 resize-none"></textarea>
                             </div>
                         </div>
@@ -394,13 +393,14 @@
                                     placeholder="{{ __('store.bot.knowledge.label') }}">
                             </div>
                         </div>
-                    </div> 
+                    </div>
                     <div class="w-full px-3 mt-2 flex justify-center items-center flex-wrap md:flex-nowrap">
                         <div class="w-full">
                             <label
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white cursor-pointer bg-gray-200 hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-800 p-2 rounded-lg"
                                 onclick="toggleModelfile()" for="modelfile">{{ __('store.bot.modelfile') }}</label>
-                            <div class="botfile prompt-bot server-bot agent-bot flex items-center modelfile-toggle" style="display:none">
+                            <div class="botfile prompt-bot server-bot agent-bot flex items-center modelfile-toggle"
+                                style="display:none">
                                 <textarea name="modelfile" hidden></textarea>
                                 <div id="bot-modelfile-editor" class="w-full h-64"></div>
                             </div>
@@ -430,11 +430,11 @@
 <script>
     const BOT_TYPES = ['prompt', 'server', 'agent'];
 
-    function getCurrentBotType(){
+    function getCurrentBotType() {
         return $('#bot_type').val();
     }
 
-    function getBotElements(bot_type){
+    function getBotElements(bot_type) {
         bot_type = typeof bot_type !== "undefined" ? bot_type : getCurrentBotType();
         if (!BOT_TYPES.includes(bot_type)) {
             console.error(`Unsupported bot type "${bot_type}"`);
@@ -475,7 +475,7 @@
             $("#llm_name").val("Weblet");
             error_messages["bot_server_url"] = "{{ __('store.hint.must_enter_server_url') }}";
         }
-        
+
         if ($("#bot_type").val() === "agent") {
             $("#llm_name").val("Agent");
             error_messages["bot-input_bot"] = "{{ __('store.hint.must_enter_input_bot') }}";
@@ -513,18 +513,19 @@
             args = [args];
         }
 
-        
+
         let is_parameter = inst.toLowerCase() === "parameter";
-        if (args.join(' ').trim() === "" || (is_parameter && args.slice(1).join(' ').trim() === "")){
+        if (args.join(' ').trim() === "" || (is_parameter && args.slice(1).join(' ').trim() === "")) {
             return;
         }
-        
-      
+
+
         parsed_modelfile = modelfile_parse(ace.edit('bot-modelfile-editor').getValue());
         new_modelfile = parsed_modelfile.filter(
             (item) =>
-                item.name.toLowerCase() !== inst.toLowerCase() ||
-                (is_parameter && item.args.toLowerCase().split(' ').find(e => true) !== args.find(e => true).toLowerCase())
+            item.name.toLowerCase() !== inst.toLowerCase() ||
+            (is_parameter && item.args.toLowerCase().split(' ').find(e => true) !== args.find(e => true)
+                .toLowerCase())
         );
         new_modelfile.push({
             name: inst,
@@ -587,6 +588,8 @@
     }
 
     function importBot(files) {
+        if (default_visibility == null)
+            default_visibility = $("#visibility_list input").last().val()
         const reader = new FileReader()
         const encodeNonAscii = (x) => x.replace(/[^\x00-\x7F]/g, encodeURIComponent);
         const getMimeHeader = (x) => encodeNonAscii(x.substr(0, x.indexOf('\r\n\r\n')));
@@ -617,6 +620,11 @@
             }
 
             const create_bot_modal = FlowbiteInstances.getInstance('Modal', 'create-bot-modal');
+            $("#visibility_list input").last().click().prop("checked", true)
+
+            $("#bot_type").val($("#llm_name").val() == "Weblet" ? "server" : ($("#llm_name").val() == "Agent" ?
+                "agent" : "prompt"))
+            showBotConfigLayout()
             create_bot_modal.show();
         }
 
@@ -652,14 +660,14 @@
             // Handle error, display message to the user, etc.
         }
     }
-    updateDataListFromAPI("store/bots", "bots-list");
-    updateDataListFromAPI("store/knowledge", "knowledge-list");
+    updateDataListFromAPI("/store/bots", "bots-list");
+    updateDataListFromAPI("/store/knowledge", "knowledge-list");
 
     window.addEventListener('load', function() {
         // To prevent "Blocked aria-hidden on an element because its descendant retained focus."
         initFlowbite();
         const create_bot_modal = FlowbiteInstances.getInstance('Modal', 'create-bot-modal');
-        create_bot_modal.updateOnHide(function(e){
+        create_bot_modal.updateOnHide(function(e) {
             console.log("model hidden")
             if (document.activeElement) {
                 document.activeElement.blur();

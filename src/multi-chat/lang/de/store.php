@@ -25,6 +25,7 @@ return [
     'button.delete' => 'Löschen',
     'button.export' => 'Exportieren',
     'button.explore_more' => 'Mehr Bots entdecken',
+    'button.duplicate' => 'Duplizieren',
     'bot.system_prompt' => 'System-Eingabeaufforderung',
     'bot.welcome_message' => 'Willkommensnachricht',
     'bot.name' => 'Anwendungsname',

@@ -56,7 +56,7 @@ def cat_tool(input_line):
         return
     response = None
     try:
-        response = requests.get(input_line)
+        response = requests.get(input_line, timeout=5)
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
         print(f"Error fetching URL: {e}")

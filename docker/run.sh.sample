@@ -8,7 +8,7 @@ confs=(
 
   # Local models
   "ollama"
-  "sample/gemma3-1b"
+  "gemma3-1b"
   "whisper"
   "diffuser"
 

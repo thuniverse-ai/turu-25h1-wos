@@ -22,6 +22,8 @@ PARAMETER generator_limit 3072 # Length limit of the entire prompt in characters
 PARAMETER display_hide_ref False # Do not show references
 PARAMETER crawler_user_agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36" # Crawler UA string
 PARAMETER search_advanced_params "" # Advanced search parameters
+PARAMETER search_engine_url None # Use Google Search API
 PARAMETER search_num_url 3 # Number of search results to retrieve [1~10]
+PARAMETER search_num_skip_url 0 # The offset of the URLs from the searching result
 
 --kuwaf4j5b--

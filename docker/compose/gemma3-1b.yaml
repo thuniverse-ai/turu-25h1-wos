@@ -3,7 +3,7 @@ services:
     image: kuwaai/model-executor
     environment:
       EXECUTOR_TYPE: llamacpp
-      EXECUTOR_ACCESS_CODE: .model/google/gemma-3-1b-it
+      EXECUTOR_ACCESS_CODE: .model/google/gemma-3-1b
       EXECUTOR_NAME: Gemma 3 1B
       EXECUTOR_IMAGE: gemma.png # Refer to src/multi-chat/public/images
       EXECUTOR_ORDER: 311003

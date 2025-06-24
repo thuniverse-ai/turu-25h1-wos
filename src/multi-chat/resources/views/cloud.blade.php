@@ -242,7 +242,7 @@
             $('#copy-file-url').on('click', function() {
                 const fileUrl = selectedFile.data('url');
                 const baseUrl = window.location.origin;
-                const fullUrl = baseUrl + '/storage/root' + fileUrl;
+                const fullUrl = encodeURI(baseUrl + '/storage/root' + fileUrl);
 
                 var textArea = document.createElement("textarea");
                 textArea.value = fullUrl;

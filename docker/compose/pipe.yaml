@@ -13,6 +13,6 @@ services:
       EXECUTOR_ORDER: 999999
       TRANSFORMERS_OFFLINE: ${TRANSFORMERS_OFFLINE:-0} # For embedding model
     command: [
-      "--api_base_url", "http://${DOMAIN_NAME}/",
+      "--api_base_url", "http://web/",
       "--log", "debug",
     ]

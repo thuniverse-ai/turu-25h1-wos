@@ -11,6 +11,9 @@
     @endenv
     <x-chat.functions />
     <x-store.modal.bot-detail :result="$result" />
+    @if (request()->user()->hasPerm(['tab_Manage', 'Store_create_community_bot', 'Store_create_group_bot', 'Store_create_private_bot']))
+        <x-store.modal.create-bot :result="$result" />
+    @endif
     @if (request()->user()->hasPerm('Room_delete_chatroom'))
         <x-room.modal.delete_confirm />
     @endif

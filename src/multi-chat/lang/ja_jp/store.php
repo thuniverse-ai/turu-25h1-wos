@@ -25,6 +25,7 @@ return [
     'button.delete' => '削除',
     'button.export' => 'エクスポート',
     'button.explore_more' => 'もっとBotを探す',
+    'button.duplicate' => '複製',
     'bot.system_prompt' => 'システムプロンプト',
     'bot.welcome_message' => 'ウェルカムメッセージ',
     'bot.name' => 'アプリ名',

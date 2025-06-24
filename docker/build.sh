@@ -2,13 +2,14 @@
 
 REBOOT_FLAG=".reboot_flag"
 BUILD_SCRIPT_VERSION="v0.2.0"
+KUWA_OWNER=${SUDO_USER:-$USER}
 
 install_docker() {
   if ! command -v docker &>/dev/null; then
     echo "Installing Docker..."
 
     # Uninstall conflicting packages
-    for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
+    for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do apt-get remove $pkg; done
 
     # Add docker's official GPG key
     apt-get update
@@ -39,6 +40,9 @@ EOT
   else
     echo "Docker is already installed."
   fi
+  echo "Adding $KUWA_OWNER to group docker."
+  adduser $KUWA_OWNER docker
+  docker version
 }
 
 install_nvidia_driver() {
@@ -110,6 +114,7 @@ install_kuwa() {
   cd "$(pwd)"
   if ! git rev-parse &>/dev/null; then
     git clone https://github.com/kuwaai/kuwa-aios/
+    chown -R $KUWA_OWNER kuwa-aios
     pushd kuwa-aios/docker > /dev/null
   else
     pushd "$(dirname "$0")" > /dev/null
@@ -150,6 +155,7 @@ install_kuwa() {
   if [[ "$build_docker_image" == "y" || "$build_docker_image" == "Y" ]]; then
     ./script/build-image.sh
   fi
+  ./run.sh
   popd > /dev/null
 }
 
@@ -170,7 +176,6 @@ install_all() {
     install_nvidia_container_toolkit
   fi
   install_kuwa
-  ./run.sh
 }
 
 echo "Kuwa building script ${BUILD_SCRIPT_VERSION}"

@@ -5,7 +5,7 @@ client_max_body_size 101M;
 proxy_read_timeout 600;
 
 root /app/public;
-index index.php;
+index index.php index.html;
 location / { try_files $uri $uri/ /index.php?$query_string; }
 location = /favicon.ico { access_log off; log_not_found off; }
 location = /robots.txt { access_log off; log_not_found off; }

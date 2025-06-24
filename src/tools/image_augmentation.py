@@ -24,7 +24,7 @@ def download_file(url):
     filename = urllib.parse.unquote(filename)
     filename, ext = os.path.splitext(filename)
 
-    response = requests.get(url, stream=True)
+    response = requests.get(url, stream=True, timeout=5)
     with tempfile.NamedTemporaryFile(delete=False, prefix=filename, suffix=ext) as f:
         if response.status_code != 200:
             raise Exception(f"Error downloading file. Status code: {response.status_code}")

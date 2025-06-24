@@ -7,7 +7,7 @@ services:
       - executor-builder
     environment:
       EXECUTOR_TYPE: geminipro
-      EXECUTOR_ACCESS_CODE: .model/google/gemini
+      EXECUTOR_ACCESS_CODE: .model:google/gemini
       EXECUTOR_NAME: Gemini
       EXECUTOR_IMAGE: gemini.png # Refer to src/multi-chat/public/images
       EXECUTOR_ORDER: 401000

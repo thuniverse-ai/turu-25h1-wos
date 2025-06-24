@@ -25,6 +25,7 @@ return [
     'button.delete' => 'Smazat',
     'button.export' => 'Exportovat',
     'button.explore_more' => 'Objevte více Botů',
+    'button.duplicate' => 'Duplikovat',
     'bot.system_prompt' => 'Systémový výzva',
     'bot.welcome_message' => 'Uvítací zpráva',
     'bot.name' => 'Název aplikace',

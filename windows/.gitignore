@@ -18,3 +18,4 @@ logs/
 !.gitignore
 !.gitattributes
 prepare_qnn.*
+postinstall

@@ -54,7 +54,7 @@ class RoomController extends Controller
                 ->header('Content-Type', 'application/vnd.ms-word')
                 ->header('Expires', '0')
                 ->header('Cache-Control', 'must-revalidate, post-check=0, pre-check=0')
-                ->header('Content-Disposition', 'attachment;filename=' . ChatRoom::find(request()->route('room_id'))->name . '.doc');
+                ->header('Content-Disposition', 'attachment;filename=export_' . trim(preg_replace('/_+/', '_', preg_replace('/[^a-zA-Z0-9-_]/', '_', ChatRoom::find(request()->route('room_id'))->name ?? 'room')), '_') . '.doc');
         } else {
             return redirect()->route('room.home');
         }
@@ -63,7 +63,7 @@ class RoomController extends Controller
     {
         $chat = ChatRoom::find($request->route('room_id'));
         if ($chat && $chat->user_id == Auth::user()->id) {
-            return view('room.export');
+            return view('room.share', ['print' => true]);
         } else {
             return redirect()->route('room.home');
         }
@@ -170,7 +170,17 @@ class RoomController extends Controller
                         $model = isset($message->model) && is_string($message->model) && str_starts_with($message->model, \App\Http\Controllers\ProfileController::BOT_PREFIX) ? $message->model : null;
                         if ($message->role === 'assistant') {
                             if (!is_null($model)) {
-                                $bot = Bots::where('name', '=', substr($model, strlen(\App\Http\Controllers\ProfileController::BOT_PREFIX)));
+                                $bot = Bots::leftjoin('users', 'users.id', '=', 'bots.owner_id')->where('bots.name', '=', substr($model, strlen(\App\Http\Controllers\ProfileController::BOT_PREFIX)))
+                                    ->where(function ($query) {
+                                        $query->where(function ($q) {
+                                            $q->where('visibility', 3)
+                                            ->where('owner_id', Auth::user()->id);
+                                        })->orWhere(function ($q) {
+                                            $q->where('visibility', 2)
+                                            ->where('users.group_id', Auth::user()->group_id);
+                                        })->orWhere('visibility', 1)->orwhere('visibility', 0);
+                                    })->select("bots.*");
+
                                 if ($bot->exists()) {
                                     $bot = $bot->first();
                                     if (!in_array($model, $bot_ids)) {
@@ -700,6 +710,9 @@ class RoomController extends Controller
 
                 if ($prompts) {
                     $prompts = explode("\n", $prependMessage . $prompts);
+                    foreach ($prompts as &$prompt) {
+                        $prompt = str_replace('\n', "\n", $prompt);
+                    }
                     if ($roomId ?? null) {
                         $Room = ChatRoom::findorfail($roomId);
                         $chat = Chats::where('roomID', '=', $roomId)->where('bot_id', $i)->first();

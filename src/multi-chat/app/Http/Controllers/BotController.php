@@ -15,7 +15,6 @@ use App\Http\Requests\BotCreateRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\Histories;
-use App\Jobs\ImportChat;
 use App\Jobs\RequestChat;
 use App\Models\Chats;
 use App\Models\LLMs;

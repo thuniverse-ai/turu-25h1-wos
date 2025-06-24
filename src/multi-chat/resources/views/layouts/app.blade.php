@@ -20,7 +20,8 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <script src="{{ asset('js/kuwa_api.js') }}"></script>
+    <script src="{{ asset('js/kuwa_api.js') }}?v={{ filemtime(public_path('js/kuwa_api.js')) }}"></script>
+    <script src="{{ asset('js/ansi_up.min.js') }}"></script>
     <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
     <script src="{{ asset('js/marked.min.js') }}"></script>
     <script src="{{ asset('js/highlight.min.js') }}"></script>
@@ -112,7 +113,8 @@
                 // Array of command keywords
                 const commandKeywords = [
                     'FROM', 'PROCESS-BOT', 'ADAPTER', 'LICENSE', 'TEMPLATE', 'SYSTEM', 'PARAMETER', 'MESSAGE',
-                    'BEFORE-PROMPT', 'AFTER-PROMPT', 'KUWABOT', 'KUWAPARAM', 'WELCOME', 'PROMPTS', 'WELCOME', 'AUTO-PROMPTS', 'START-PROMPTS',
+                    'BEFORE-PROMPT', 'AFTER-PROMPT', 'KUWABOT', 'KUWAPARAM', 'WELCOME', 'PROMPTS', 'WELCOME',
+                    'AUTO-PROMPTS', 'START-PROMPTS',
                     'INPUT-BOT', 'INPUT-PREFIX', 'INPUT-SUFFIX',
                     'OUTPUT-BOT', 'OUTPUT-PREFIX', 'OUTPUT-SUFFIX',
                     'SCRIPT'
@@ -412,7 +414,8 @@
             $('#confirmUpdate').click(function() {
                 $('#confirmUpdateModal').addClass('hidden');
                 $('#commandOutput').empty().append(
-                    $('<pre class="whitespace-normal text-blue-500 font-semibold"></pre>').text('Updating, please wait...')
+                    $('<pre class="whitespace-normal text-blue-500 font-semibold"></pre>').text(
+                        'Updating, please wait...')
                 );
 
                 $('#outputModal').removeClass('hidden');
@@ -420,37 +423,42 @@
                 const eventSource = new EventSource("{{ route('manage.setting.updateWeb') }}");
                 let lastMessage = '';
 
+                // ANSI parser instance
+                const ansi_up = new AnsiUp();
+                ansi_up.use_classes = true;
+
+                function createPreElement(message, customClass = '') {
+                    const html = ansi_up.ansi_to_html(message);
+                    return $('<pre class="whitespace-normal ansi"></pre>')
+                        .html(html)
+                        .addClass(customClass);
+                }
+
                 eventSource.onmessage = function(event) {
                     const response = JSON.parse(event.data);
-
                     lastMessage = response.output;
 
-                    const preElement = $('<pre class="whitespace-normal"></pre>').text(response.output);
+                    const preElement = createPreElement(lastMessage);
                     $('#commandOutput').append(preElement);
                 };
 
-                eventSource.onerror = function(event) {
+                eventSource.onerror = function() {
                     eventSource.close();
-
                     paintLastMessage();
                 };
 
                 eventSource.onclose = function() {
-                    if (!isError) {
-                        paintLastMessage();
-                    }
+                    paintLastMessage();
                 };
 
                 function paintLastMessage() {
-                    const preElement = $('<pre class="whitespace-normal"></pre>').text(lastMessage);
+                    const isSuccess = lastMessage === 'Update completed successfully!';
+                    const statusClass = isSuccess ? 'text-green-500' : 'text-red-500';
 
-                    if (lastMessage !== 'Update completed successfully!') {
-                        preElement.addClass('text-red-500');
-                    } else {
-                        preElement.addClass('text-green-500');
-                    }
                     $('#commandOutput pre:last').remove();
-                    $('#commandOutput').append(preElement);
+                    const finalElement = createPreElement(lastMessage, statusClass);
+                    $('#commandOutput').append(finalElement);
+
                     $("#refreshPage").removeClass('hidden');
                 }
 

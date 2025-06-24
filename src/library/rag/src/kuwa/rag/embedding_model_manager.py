@@ -13,8 +13,8 @@ class EmbeddingModelManager:
     If no DocumentStore instance reference to a embedding model, the model is unloaded.
     """
 
-    referers = {}  # model name: {referers' id}
-    models = {}  # model name: model instance
+    referers = dict()  # model name: {referers' id}
+    models = dict()  # model name: model instance
 
     def acquire_model(self, caller_id, model_name):
         """
@@ -41,7 +41,7 @@ class EmbeddingModelManager:
         """
         models = [model_name] if model_name is not None else list(self.models.keys())
         for name in models:
-            self.referers[name].remove(caller_id)
+            self.referers[name].discard(caller_id)
             if len(self.referers[name]) > 0:
                 continue
             del self.models[name]

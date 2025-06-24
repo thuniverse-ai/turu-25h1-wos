@@ -37,4 +37,6 @@ return [
     'Cloud_read_my_files' => 'Číst soubory',
     'Cloud_update_upload_files' => 'Nahrát soubory',
     'Cloud_delete_my_files' => 'Smazat soubory',
+    'Room_delete_room_message' => 'Zpráva o smazání místnosti',
+    'Store_create_bot_via_api' => 'Vytvořit Bota přes API',
 ];

@@ -107,10 +107,10 @@ class GoogleFileStore:
 
 
 class GeminiExecutor(LLMExecutor):
-    model_name: str = "gemini-1.5-flash"
+    model_name: str = "gemini-2.0-flash"
     system_prompt: str = ""
     no_system_prompt: bool = False
-    limit: int = 30720
+    limit: int = 1048576
     generation_config: dict = {}
     # Ref: https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/inference#blob
     supported_mime_types = [
@@ -228,7 +228,7 @@ class GeminiExecutor(LLMExecutor):
                 img = fetch_image(url)
                 content = convert_image(img)
             else:
-                response = requests.get(url, stream=True, allow_redirects=True)
+                response = requests.get(url, stream=True, allow_redirects=True, timeout=5)
                 response.raise_for_status()
                 content = response.content
             logger.info("Attachment fetched.")

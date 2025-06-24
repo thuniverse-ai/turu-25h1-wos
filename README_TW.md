@@ -64,7 +64,7 @@
 * **Linux/Docker**
 可下載 [build.sh](./docker/build.sh) 後執行 **sudo build.sh**，或在Linux下執行以下指令即可自動下載及安裝Docker、CUDA及Kuwa。安裝CUDA後需重開機，安裝完成前會設定管理者及資料庫密碼，全部安裝完成後會執行 run.sh 自動啟動Kuwa，預設用 admin@localhost 帳號登入。
   ```
-  curl -fsSL https://raw.githubusercontent.com/kuwaai/kuwa-aios/main/docker/build.sh | sudo bash
+  bash -c "$(curl -fsSL https://raw.githubusercontent.com/kuwaai/kuwa-aios/main/docker/build.sh)"
   ```
 ### 手動安裝
 可參考安裝文件逐步進行手動安裝

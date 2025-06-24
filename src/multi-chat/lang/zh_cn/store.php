@@ -25,6 +25,7 @@ return [
     'button.delete' => '删除',
     'button.export' => '导出',
     'button.explore_more' => '探索更多机器人',
+    'button.duplicate' => '复制',
     'bot.system_prompt' => '系统提示词',
     'bot.welcome_message' => '欢迎消息',
     'bot.name' => '应用名称',

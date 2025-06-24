@@ -224,7 +224,7 @@ Route::middleware([AutoLogin::class, LanguageMiddleware::class])->group(function
                         Route::middleware(AdminMiddleware::class . ':Store_delete_delete_bot')
                             ->delete('/delete', [BotController::class, 'delete'])
                             ->name('store.delete');
-                        Route::get('/knowledge', [BotController::class, 'listKnowledge'])->name('store.list_knowledge');
+                        Route::get('/knowledge', [BotController::class, 'listKnowledge'])->name('store.listKnowledge');
                         Route::get('/bots', [BotController::class, 'listBots'])->name('store.bots');
                     })
                     ->name('store');

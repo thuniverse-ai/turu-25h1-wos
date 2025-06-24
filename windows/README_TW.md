@@ -13,7 +13,7 @@
 - 過程會創建管理者權限帳號，如需重新創建，請參照[常見問題](#常見問題)第一項。
 ```bat
 git clone https://github.com/kuwaai/kuwa-aios.git
-cd genai-os/windows
+cd kuwa-aios/windows
 "build & start.bat"
 ```
 - 關閉系統請輸入`stop`指令，直接關閉視窗可能會無法順利釋放記憶體，不小心關閉視窗請參照[常見問題](#常見問題)第三項。
@@ -24,7 +24,7 @@ cd genai-os/windows
 1. **從Release下載，或用git bash執行以下指令複製專案並切換至專案內的 windows 資料夾：**
    ```bat
    git clone https://github.com/kuwaai/kuwa-aios.git
-   cd genai-os/windows
+   cd kuwa-aios/windows
    ```
 
 2. **下載相關套件並快速進行設定：**

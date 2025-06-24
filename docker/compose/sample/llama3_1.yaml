@@ -3,7 +3,7 @@ services:
     image: kuwaai/model-executor
     environment:
       EXECUTOR_TYPE: llamacpp
-      EXECUTOR_ACCESS_CODE: .model/meta-llama/llama-3.1-8b
+      EXECUTOR_ACCESS_CODE: .model/meta/llama-3.1
       EXECUTOR_NAME: Meta LLaMA3.1 8B Instruct
       EXECUTOR_IMAGE: llama3_1.jpeg # Refer to src/multi-chat/public/images
       # HUGGING_FACE_HUB_TOKEN: ${HUGGING_FACE_HUB_TOKEN}

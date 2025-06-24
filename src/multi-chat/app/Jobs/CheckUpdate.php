@@ -31,6 +31,8 @@ class CheckUpdate implements ShouldQueue
 
     public function handle()
     {
+        ignore_user_abort(true);
+        set_time_limit(0);
         try {
             $checkUpdateScript = base_path('app/Console/check-update.php');
 
@@ -40,7 +42,9 @@ class CheckUpdate implements ShouldQueue
             ];
 
             if (File::exists($checkUpdateScript)) {
-                $process = Process::fromShellCommandline('php ' . $checkUpdateScript)->setEnv($env)->setTimeout(null);
+                $process = Process::fromShellCommandline('php ' . $checkUpdateScript)
+                    ->setEnv($env)
+                    ->setTimeout(null);
                 $process->setTimeout(null);
                 $process->run();
 
@@ -106,7 +110,9 @@ class CheckUpdate implements ShouldQueue
             $baseCommit = trim($baseCommitProcess->getOutput());
 
             $url = 'https://update.kuwaai.org/check_update/' . substr($baseCommit, 0, 8) . '/' . SystemController::getMachineCode();
-            $getUpdateUrl = Process::fromShellCommandline('curl -s ' . escapeshellarg($url))->setEnv($env)->setTimeout(null);
+            $getUpdateUrl = Process::fromShellCommandline('curl -s ' . escapeshellarg($url))
+                ->setEnv($env)
+                ->setTimeout(null);
             $getUpdateUrl->run();
 
             if ($localCommit === $upstreamCommit) {

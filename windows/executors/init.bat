@@ -35,7 +35,7 @@ set "models[5]=ollama"
 set "models[6]=custom"
 
 REM Define an array to store the access codes
-set "access_code[1]=.model/openai/chatgpt"
+set "access_code[1]=.model:openai/chatgpt"
 set "access_code[2]=.model:google/gemini"
 set "access_code[3]=llamacpp"
 set "access_code[4]=huggingface"

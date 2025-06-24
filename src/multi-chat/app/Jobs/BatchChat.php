@@ -41,6 +41,8 @@ class BatchChat implements ShouldQueue
      */
     public function handle(): void
     {
+        ignore_user_abort(true);
+        set_time_limit(0);
         $dispatchedAccessCodes = [];
         $dispatchedids = [];
         $history = Histories::find($this->history_id);

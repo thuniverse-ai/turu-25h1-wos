@@ -1,4 +1,4 @@
-FROM php:8.1-cli AS build
+FROM --platform=$BUILDPLATFORM php:8.1-cli AS build
 
 RUN apt-get update
 

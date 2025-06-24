@@ -19,6 +19,7 @@ return [
     'Room_update_import_chat' => '匯入對話',
     'Room_update_react_message' => '額外操作按鈕',
     'Room_update_ignore_upload_constraint' => '忽略上傳限制',
+    'Room_delete_room_message' => '刪除房間訊息',
 
     'Dashboard_read_statistics' => '統計資訊',
     'Dashboard_read_blacklist' => '黑名單',
@@ -30,6 +31,7 @@ return [
     'Store_create_community_bot' => '社群Bot',
     'Store_create_private_bot' => '私有Bot',
     'Store_create_group_bot' => '群組Bot',
+    'Store_create_bot_via_api' => '透過API創建Bot',
     'Store_update_modify_bot' => '修改Bot',
     'Store_delete_delete_bot' => '刪除Bot',
     'Store_read_discover_community_bots' => '存取社群Bot',
