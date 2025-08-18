@@ -37,4 +37,6 @@ return [
     'Cloud_read_my_files' => 'Read Files',
     'Cloud_update_upload_files' => 'Upload Files',
     'Cloud_delete_my_files' => 'Delete Files',
+    'Room_delete_room_message' => 'Delete room message',
+    'Store_create_bot_via_api' => 'Create Bot via API',
 ];

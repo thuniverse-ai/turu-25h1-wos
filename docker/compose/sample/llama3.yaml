@@ -3,7 +3,7 @@ services:
     image: kuwaai/model-executor
     environment:
       EXECUTOR_TYPE: huggingface
-      EXECUTOR_ACCESS_CODE: llama3-8b-instruct
+      EXECUTOR_ACCESS_CODE: .model/meta/llama-3
       EXECUTOR_NAME: Meta LLaMA3 8B Instruct
       # HUGGING_FACE_HUB_TOKEN: ${HUGGING_FACE_HUB_TOKEN}
     depends_on:

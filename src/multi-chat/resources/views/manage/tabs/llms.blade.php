@@ -300,7 +300,7 @@
         $("#edit_llm_btn_" + $llms[data][4]).addClass("bg-gray-200 dark:bg-gray-600")
         $("#new_llm_btn").addClass("bg-green-400 dark:bg-green-600")
         $("#new_llm_btn").removeClass("dark:bg-green-700 bg-green-500")
-        $("#toggle_llm_btn").attr("href", "{{ route('manage.llms.toggle', '') }}" + "/" + $llms[data][4])
+        $("#toggle_llm_btn").attr("href", "{{ route('manage.llms.toggle') }}" + "/" + $llms[data][4])
         $("#toggle_llm_btn").removeClass("bg-green-500 hover:bg-green-600 bg-red-500 hover:bg-red-600")
         $("#toggle_llm_btn").addClass($llms[data][6] ? "bg-green-500 hover:bg-green-600" :
             "bg-red-500 hover:bg-red-600")

@@ -49,7 +49,7 @@ def fetch_image(url: str):
         return None
 
     image = None
-    response = requests.get(url, stream=True, allow_redirects=True)
+    response = requests.get(url, stream=True, allow_redirects=True, timeout=5)
     response.raise_for_status()
     content_type = response.headers["content-type"]
     mime_type = content_type.split(";")[0].strip().lower()

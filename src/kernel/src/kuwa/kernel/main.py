@@ -19,6 +19,8 @@ from .routes.chat import chat
 logger = logging.getLogger(__name__)
 
 KUWA_KERNEL_API_VERSION="v1.0"
+MEGABYTE = (2 ** 20)
+MAX_PART_SIZE = 512 * MEGABYTE
 
 def main():
     parser = argparse.ArgumentParser(prog='Kuwa Kernel', description='Kuwa Kernel')
@@ -46,6 +48,8 @@ def main():
     # Init Flask Apps
     app = Flask(__name__)
     app.config["REDIS_URL"] = "redis://localhost:6379/0"
+    app.config['MAX_CONTENT_LENGTH'] = None
+    app.config['MAX_FORM_MEMORY_SIZE'] = MAX_PART_SIZE
     sse = ServerSentEventsBlueprint('sse', __name__)
     app.register_blueprint(sse, url_prefix='/')
     app.register_blueprint(executor, url_prefix=f'/{KUWA_KERNEL_API_VERSION}/worker')

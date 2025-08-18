@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('llms', function (Blueprint $table) {
-			$table->integer('limit_per_day')->change()->default(100);
+			$table->integer('limit_per_day')->default(100)->change();
         });
     }
 

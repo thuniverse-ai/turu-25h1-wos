@@ -111,8 +111,10 @@ class SystemController extends Controller
 
     public function updateProject(Request $request)
     {
+        ignore_user_abort(true);
         return response()->stream(
             function () {
+                ignore_user_abort(true);
                 header('Content-Type: text/event-stream');
                 header('Cache-Control: no-cache');
                 header('X-Accel-Buffering: no'); // Disable buffering in Nginx if present
@@ -175,7 +177,50 @@ class SystemController extends Controller
                     flush();
                     $workerController->startWorkers();
 
-                    $this->runCommand('curl -s ' . escapeshellarg($url), $projectRoot);
+                    $scriptFile = $projectRoot . $scriptPath;
+
+                    if (file_exists($scriptFile)) {
+                        $lines = file($scriptFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+
+                        $currentDir = $projectRoot . dirname($scriptPath);
+                        chdir($currentDir);
+
+                        foreach ($lines as $line) {
+                            $trimmed = trim($line);
+
+                            if (
+                                $trimmed === '' ||
+                                str_starts_with($trimmed, '#') ||                    // Linux shell
+                                str_starts_with($trimmed, '::') ||                   // Windows batch
+                                stripos($trimmed, 'REM ') === 0                      // Windows batch
+                            ) {
+                                continue;
+                            }
+
+                            if (preg_match('/^cd\s+(.+)$/i', $trimmed, $matches)) {
+                                $newPath = trim($matches[1]);
+
+                                $resolvedPath = realpath($currentDir . DIRECTORY_SEPARATOR . $newPath);
+                                if ($resolvedPath && is_dir($resolvedPath)) {
+                                    $currentDir = $resolvedPath;
+                                    chdir($currentDir);
+                                    $output = "Changed directory to $currentDir";
+                                } else {
+                                    $output = "Failed to change directory to $newPath";
+                                }
+                            } else {
+                                $output = $this->runCommand($trimmed, $currentDir);
+                            }
+
+                            echo 'data: ' . json_encode(['status' => 'progress', 'output' => $output]) . "\n\n";
+                            ob_flush();
+                            flush();
+                        }
+                    } else {
+                        echo 'data: ' . json_encode(['status' => 'error', 'output' => "Script file not found: $scriptFile"]) . "\n\n";
+                        ob_flush();
+                        flush();
+                    }
 
                     SystemSetting::where('key', 'cache_update_check')->update(['value' => 'no-update']);
                     CheckUpdate::dispatch(true);

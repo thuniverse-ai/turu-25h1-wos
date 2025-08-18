@@ -25,6 +25,7 @@ return [
     'button.delete' => '삭제',
     'button.export' => '내보내기',
     'button.explore_more' => '더 많은 Bot 탐색',
+    'button.duplicate' => '복제',
     'bot.system_prompt' => '시스템 프롬프트',
     'bot.welcome_message' => '환영 메시지',
     'bot.name' => '애플리케이션 이름',

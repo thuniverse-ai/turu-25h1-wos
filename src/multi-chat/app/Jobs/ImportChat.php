@@ -41,6 +41,8 @@ class ImportChat implements ShouldQueue
      */
     public function handle(): void
     {
+        ignore_user_abort(true);
+        set_time_limit(0);
         $dispatchedAccessCodes = [];
         $dispatchedids = [];
         foreach ($this->ids as $id) {

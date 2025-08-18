@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('llms', function (Blueprint $table) {
-			$table->string('image')->change()->nullable()->default("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z/C/HgAGlwJ/lXeUPwAAAABJRU5ErkJggg==");
+			$table->string('image')->nullable()->default("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z/C/HgAGlwJ/lXeUPwAAAABJRU5ErkJggg==")->change();
         });
     }
 

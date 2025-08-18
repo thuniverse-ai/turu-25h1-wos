@@ -102,12 +102,12 @@ def extract_last_url(chat_history: list[dict]) -> (str, list[dict]):
 @lru_cache_with_ttl()
 def get_mime_type(url):
     try:
-        response = requests.head(url, allow_redirects=True)
+        response = requests.head(url, allow_redirects=True, timeout=5)
         response.raise_for_status()
         content_type = response.headers["content-type"]
         mime_type = content_type.split(";")[0].strip().lower()
     except Exception:
-        logger
+        logger.error(f"Error fetching {url}")
         mime_type = None
     return mime_type
 

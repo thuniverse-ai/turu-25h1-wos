@@ -3,7 +3,7 @@ services:
     image: kuwaai/model-executor
     environment:
       EXECUTOR_TYPE: llamacpp
-      EXECUTOR_ACCESS_CODE: gemma2-2b-instruct
+      EXECUTOR_ACCESS_CODE: .model/google/gemma-2
       EXECUTOR_NAME: Google Gemma2 2B Instruct
       EXECUTOR_IMAGE: gemma.png # Refer to src/multi-chat/public/images
       # HUGGING_FACE_HUB_TOKEN: ${HUGGING_FACE_HUB_TOKEN}

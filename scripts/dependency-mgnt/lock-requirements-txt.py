@@ -14,6 +14,7 @@ platforms = [
     "windows-qnn",
     "docker-x86_64-cpu",
     "docker-x86_64-cu121",
+    "docker-aarch64-cpu",
 ]
 common_sources = [
     "src/executor/agent/requirements.in",
@@ -51,6 +52,10 @@ platform_sources = {
         "docker/executor/multi-chat-client/requirements.in",
         "docker/executor/requirements-x86_64-cu121.in",
     ],
+    "docker-aarch64-cpu": [
+        "docker/executor/multi-chat-client/requirements.in",
+        "docker/executor/requirements-aarch64-cpu.in",
+    ],
 }
 output_paths = {
     "windows": "windows/src/version_patch/cpu/windows/src/requirements.txt.lock",
@@ -60,6 +65,7 @@ output_paths = {
     "windows-qnn": "windows/src/version_patch/qnn/windows/src/requirements.txt.lock",
     "docker-x86_64-cpu": "docker/executor/requirements-x86_64-cpu.txt.lock",
     "docker-x86_64-cu121": "docker/executor/requirements-x86_64-cu121.txt.lock",
+    "docker-aarch64-cpu": "docker/executor/requirements-aarch64-cpu.txt.lock",
 }
 default_cmd_opts = [
     "--color",
@@ -107,6 +113,21 @@ platform_cmd_opts = {
         "--python-platform",
         "x86_64-manylinux_2_28",
     ],
+    "docker-aarch64-cpu": [
+        "--color",
+        "always",
+        "--annotation-style=line",
+        "--python-version",
+        "3.10",
+        "--no-emit-package",
+        "kuwa-kernel",
+        "--emit-index-url",
+        "--torch-backend",
+        "cpu",
+        "--preview",
+        "--python-platform",
+        "aarch64-manylinux_2_28",
+    ]
 }
 
 

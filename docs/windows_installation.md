@@ -13,7 +13,7 @@ Please follow the steps below to install:
 - The process will create an admin account. If you need a new one, please refer to the first item in [FAQs](#faq).
 ```bat
 git clone https://github.com/kuwaai/kuwa-aios.git
-cd genai-os/windows
+cd kuwa-aios/windows
 "build & start.bat"
 ```
 - Enter the `stop` command to close the system. Directly closing the window may fail to release memory usage. If you accidentally closed the window, please refer to the third item in [FAQs](#faq).
@@ -24,7 +24,7 @@ cd genai-os/windows
 1. **Download from Release, or execute the following command in git bash to clone the project and switch to the windows folder in the project:**
    ```bat
    git clone https://github.com/kuwaai/kuwa-aios.git
-   cd genai-os/windows
+   cd kuwa-aios/windows
    ```
 
 2. **Download the related packages and set up quickly:**

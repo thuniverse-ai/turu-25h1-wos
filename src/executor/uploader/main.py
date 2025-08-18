@@ -52,7 +52,7 @@ class UploaderExecutor(LLMExecutor):
         """
 
         # Send a GET request to the URL
-        response = requests.get(url, stream=True)
+        response = requests.get(url, stream=True, timeout=5)
 
         # Raise an exception if the request was unsuccessful
         response.raise_for_status()

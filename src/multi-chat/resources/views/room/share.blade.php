@@ -289,8 +289,10 @@
     @if (isset($print))
         <script>
             html2pdf().set({
-                filename: "{{ App\Models\ChatRoom::findOrFail(request()->route('room_id'))->name }}.pdf"
-            }).from(document.body).save();
+                filename: "{{ trim(preg_replace('/_+/', '_', preg_replace('/[^a-zA-Z0-9-_]/', '_', App\Models\ChatRoom::findOrFail(request()->route('room_id'))->name)), '_') }}.pdf"
+            }).from(document.body).save().then(() => {
+                window.close();
+            });
         </script>
     @endif
 </body>

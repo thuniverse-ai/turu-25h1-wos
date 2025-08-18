@@ -7,7 +7,7 @@ services:
       - executor-builder
     environment:
       EXECUTOR_TYPE: llamacpp
-      EXECUTOR_ACCESS_CODE: taide-4bit
+      EXECUTOR_ACCESS_CODE: .model/taide/taide-lx
       EXECUTOR_NAME: TAIDE 4bit
       EXECUTOR_IMAGE: llamacpp.png # Refer to src/multi-chat/public/images
     command: ["--model_path", "/var/model/taide-4bit.gguf", "--ngl", "-1", "--temperature", "0"]

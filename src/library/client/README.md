@@ -8,7 +8,7 @@ This Python library simplifies interaction with the Kuwa GenAI OS APIs.
 ## Installation
 
 ```bash
-cd genai-os/src/library/client
+cd kuwa-aios/src/library/client
 pip install .
 ```
 
@@ -24,7 +24,7 @@ from kuwa.client import KuwaClient
 client = KuwaClient(
     base_url="http://localhost",
     kernel_base_url="http://localhost:9000",
-    model="geminipro",
+    model=".bot/.default",
     auth_token="YOUR_API_TOKEN_HERE"
 )
 ```

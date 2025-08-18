@@ -139,9 +139,9 @@ class DalleExecutor(LLMExecutor):
     def fetch_image_as_png(self, url: str):
         image = None
         if (url is not None and url != "") and requests.head(
-            url, allow_redirects=True
+            url, allow_redirects=True, timeout=5
         ).headers["content-type"] in self.get_supported_image_mime():
-            image = Image.open(requests.get(url, stream=True, allow_redirects=True).raw)
+            image = Image.open(requests.get(url, stream=True, allow_redirects=True, timeout=5).raw)
             image = image.convert("RGBA")
             logger.info("Image fetched.")
 

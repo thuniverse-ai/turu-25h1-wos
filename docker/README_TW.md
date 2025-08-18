@@ -150,7 +150,7 @@ docker exec -it kuwa-multi-chat-1 docker-entrypoint force-upgrade
 
 ### 4. 從原始碼建置 Docker Images
 自 v0.3.4 起，預設會從 Docker Hub 下載預先建置好的 Kuwa Docker Image，  
-若您想從原始碼建立映像，請確保您的 `genai-os` 目錄下已包含 `.git` 目錄。接著，可使用以下指令建立 Kuwa 映像：
+若您想從原始碼建立映像，請確保您的 `kuwa-aios` 目錄下已包含 `.git` 目錄。接著，可使用以下指令建立 Kuwa 映像：
 ```sh
 cd docker
 ./run.sh build

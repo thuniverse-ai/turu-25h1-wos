@@ -55,7 +55,7 @@
             </div>
             <button data-tooltip-target="{{ $history->id }}_react_like" data-tooltip-placement="top"
                 class="flex text-black hover:bg-gray-400 p-2 h-[32px] w-[32px] justify-center items-center rounded-lg {{ $history->nice === true ? 'text-green-600' : 'text-black' }}"
-                @if (request()->user()->hasPerm('Room_update_detail_feedback')) data-modal-target="feedback" data-modal-toggle="feedback" @endif
+                @if (request()->user()->hasPerm('Room_update_detail_feedback')) data-modal-target="feedback_modal" data-modal-toggle="feedback_modal" @endif
                 onclick="feedback({{ $history->id }},1,this,{!! htmlspecialchars(
                     json_encode(['detail' => $history->detail, 'flags' => $history->flags, 'nice' => $history->nice]),
                 ) !!});">
@@ -74,7 +74,7 @@
             </div>
             <button data-tooltip-target="{{ $history->id }}_react_dislike" data-tooltip-placement="top"
                 class="flex text-black hover:bg-gray-400 p-2 h-[32px] w-[32px] justify-center items-center rounded-lg {{ $history->nice === false ? 'text-red-600' : 'text-black' }}"
-                data-modal-target="feedback" data-modal-toggle="feedback"
+                data-modal-target="feedback_modal" data-modal-toggle="feedback_modal"
                 onclick="feedback({{ $history->id }},2,this,{!! htmlspecialchars(
                     json_encode(['detail' => $history->detail, 'flags' => $history->flags, 'nice' => $history->nice]),
                 ) !!});">

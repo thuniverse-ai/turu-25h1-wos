@@ -7,7 +7,7 @@ services:
       - executor-builder
     environment:
       CUSTOM_EXECUTOR_PATH: ./docqa/docqa.py
-      EXECUTOR_ACCESS_CODE: db-qa:custom-db
+      EXECUTOR_ACCESS_CODE: .tool/kuwa/rag-custom-db
       EXECUTOR_NAME: DB QA (Custom DB)
       TRANSFORMERS_OFFLINE: ${TRANSFORMERS_OFFLINE:-0} # For embedding model
     volumes: [
@@ -15,7 +15,7 @@ services:
     ]
     command: [
       "--api_base_url", "http://web/",
-      "--model", "geminipro",
+      "--model", ".bot/.default",
       "--database", "/var/database/",
       "--log", "debug"
       ]

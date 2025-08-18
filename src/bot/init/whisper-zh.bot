@@ -11,7 +11,7 @@ Content-Language: zh
 KUWABOT version 0.3.3
 KUWABOT name "Whisper (Taiwan)"
 KUWABOT description "Generate Transcription (Demo to support Traditional Chinese)."
-KUWABOT base ".model:whisper/"
+KUWABOT base ".model/openai/whisper"
 PARAMETER whisper_model small #base, large-v1, large-v2, large-v3, medium,  small, tiny
 PARAMETER whisper_compute_type float32
 PARAMETER whisper_enable_timestamp False #Do not prepend the text a timestamp

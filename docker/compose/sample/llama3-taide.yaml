@@ -3,7 +3,7 @@ services:
     image: kuwaai/model-executor
     environment:
       EXECUTOR_TYPE: huggingface
-      EXECUTOR_ACCESS_CODE: llama3-taide-lx-8b-chat
+      EXECUTOR_ACCESS_CODE: .model/taide/taide-lx
       EXECUTOR_NAME: Meta Llama3 TAIDE LX 8B Chat
       EXECUTOR_IMAGE: TAIDE.png # Refer to src/multi-chat/public/images
       HUGGING_FACE_HUB_TOKEN: ${HUGGING_FACE_HUB_TOKEN}

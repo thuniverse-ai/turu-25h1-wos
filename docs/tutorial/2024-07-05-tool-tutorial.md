@@ -29,7 +29,7 @@ class DebugExecutor(LLMExecutor):
         """
         Responsible for handling the requests, the input is chat history (in
         OpenAI format) and parsed Modelfile (you can refer to
-        `genai-os/src/executor/src/kuwa/executor/modelfile.py`), it will return an
+        `kuwa-aios/src/executor/src/kuwa/executor/modelfile.py`), it will return an
         Asynchronous Generators to represent the output stream.
         """
         try:

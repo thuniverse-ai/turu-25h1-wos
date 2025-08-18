@@ -37,4 +37,6 @@ return [
     'Cloud_read_my_files' => '파일 읽기',
     'Cloud_update_upload_files' => '파일 업로드',
     'Cloud_delete_my_files' => '파일 삭제',
+    'Room_delete_room_message' => '방 삭제 메시지',
+    'Store_create_bot_via_api' => 'API를 통해 Bot 생성',
 ];

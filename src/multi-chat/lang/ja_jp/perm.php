@@ -37,4 +37,6 @@ return [
     'Cloud_read_my_files' => 'ファイル閲覧',
     'Cloud_update_upload_files' => 'ファイルアップロード',
     'Cloud_delete_my_files' => 'ファイルを削除する',
+    'Room_delete_room_message' => '部屋削除メッセージ',
+    'Store_create_bot_via_api' => 'API経由でBotを作成',
 ];

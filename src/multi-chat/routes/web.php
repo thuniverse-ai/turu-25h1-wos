@@ -224,7 +224,7 @@ Route::middleware([AutoLogin::class, LanguageMiddleware::class])->group(function
                         Route::middleware(AdminMiddleware::class . ':Store_delete_delete_bot')
                             ->delete('/delete', [BotController::class, 'delete'])
                             ->name('store.delete');
-                        Route::get('/knowledge', [BotController::class, 'listKnowledge'])->name('store.list_knowledge');
+                        Route::get('/knowledge', [BotController::class, 'listKnowledge'])->name('store.listKnowledge');
                         Route::get('/bots', [BotController::class, 'listBots'])->name('store.bots');
                     })
                     ->name('store');
@@ -271,7 +271,7 @@ Route::middleware([AutoLogin::class, LanguageMiddleware::class])->group(function
 
                         Route::prefix('LLMs')
                             ->group(function () {
-                                Route::get('/toggle/{llm_id}', [ManageController::class, 'llm_toggle'])->name('manage.llms.toggle');
+                                Route::get('/toggle/{llm_id?}', [ManageController::class, 'llm_toggle'])->name('manage.llms.toggle');
                                 Route::delete('/delete', [ManageController::class, 'llm_delete'])->name('manage.llms.delete');
                                 Route::post('/create', [ManageController::class, 'llm_create'])->name('manage.llms.create');
                                 Route::patch('/update', [ManageController::class, 'llm_update'])->name('manage.llms.update');

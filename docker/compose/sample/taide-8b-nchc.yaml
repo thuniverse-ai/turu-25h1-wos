@@ -3,7 +3,7 @@ services:
     image: kuwaai/model-executor
     environment:
       EXECUTOR_TYPE: chatgpt
-      EXECUTOR_ACCESS_CODE: taide-8b
+      EXECUTOR_ACCESS_CODE: .model:nchc/taide/taide-lx
       EXECUTOR_NAME: TAIDE API
       EXECUTOR_IMAGE: TAIDE.png # Refer to src/multi-chat/public/images
     depends_on:

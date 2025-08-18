@@ -27,6 +27,8 @@ class HealthCheck implements ShouldQueue
      */
     public function handle()
     {
+        ignore_user_abort(true);
+        set_time_limit(0);
         $systemSetting = SystemSetting::where('key', 'kernel_location')->first();
 
         if ($systemSetting && $systemSetting->value) {

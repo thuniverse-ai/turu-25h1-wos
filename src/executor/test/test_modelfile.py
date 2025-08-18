@@ -18,6 +18,8 @@ class TestExtractTextFromQuotes(unittest.TestCase):
         "Invalid 'syntax'": "Invalid 'syntax'",
         " No quote with spaces  ": "No quote with spaces",
         ' "Quote with space "   ': "Quote with space ",
+        " 'Quote with space '   ": "Quote with space ",
+        ' """Quote with new line and space\n """   ': "Quote with new line and space\n ",
     }
 
     def test(self):

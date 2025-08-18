@@ -152,7 +152,7 @@ class SpeechRecognitionExecutor(LLMExecutor):
     def download(self, url):
         # Create a temporary file to store the downloaded content
         filepath = None
-        response = requests.get(url)
+        response = requests.get(url, timeout=5)
         content_type = response.headers["Content-Type"]
         logger.debug(f"Content-Type: {content_type}")
         extension = mimetypes.guess_extension(content_type.split(";", 1)[0])

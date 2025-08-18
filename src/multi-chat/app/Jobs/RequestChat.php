@@ -33,11 +33,11 @@ enum AppType
 
 class WarningMessages
 {
-    const DEFAULT_ERROR = "[Sorry, something is broken, please try again later!]";
+    const DEFAULT_ERROR = '[Sorry, something is broken, please try again later!]';
     const NO_EXECUTOR = "[Sorry, There're no machine to process this LLM right now! Please report to Admin or retry later!]";
-    const EMPTY_RESPONSE = "[Oops, the LLM returned empty message, please try again later or report to admins!]";
-    const KUWA_WARNING = "[Regarding the introduction of Kuwa, please refer to the information on the official kuwaai.org website.]";
-    const KUWA_WARNING_ZH = "[有關Kuwa的相關說明，請以 kuwaai.org 官網的資訊為準。]";
+    const EMPTY_RESPONSE = '[Oops, the LLM returned empty message, please try again later or report to admins!]';
+    const KUWA_WARNING = '[Regarding the introduction of Kuwa, please refer to the information on the official kuwaai.org website.]';
+    const KUWA_WARNING_ZH = '[有關Kuwa的相關說明，請以 kuwaai.org 官網的資訊為準。]';
 }
 class KuwaKernelException extends \Exception
 {
@@ -59,7 +59,7 @@ class RequestChat implements ShouldQueue
     private $lang, $modelfile, $openai_token, $google_token, $third_party_token, $user_token, $nim_token;
     private $preserved_output, $exit_when_finish;
     private $kernel_location, $client;
-    public $backoff_sec = 10; # Backoff for 10 seconds when the executors are busy 
+    public $backoff_sec = 10; # Backoff for 10 seconds when the executors are busy
     public $tries = 100; # Wait 1000 seconds in total
     public $timeout = 1200; # For the 100th try, 200 seconds limit is given
     public static $kernel_api_version = 'v1.0';
@@ -78,7 +78,6 @@ class RequestChat implements ShouldQueue
                     array_filter(
                         array_map(function ($entry) use ($excludedNames) {
                             if (!in_array($entry->name, $excludedNames, true) && !empty($entry->name) && $entry->name[0] !== '#') {
-                                $entry->args = str_starts_with($entry->args, '"') ? trim($entry->args, '"') : $entry->args;
                                 return $entry;
                             }
                         }, $modelfile),
@@ -102,11 +101,11 @@ class RequestChat implements ShouldQueue
         $this->app_type = match (strtoupper(explode('_', $channel)[0])) {
             'API' => AppType::API,
             'USERTASK' => AppType::CHATROOM,
-            default => AppType::CHATROOM
+            default => AppType::CHATROOM,
         };
         $this->job_queue_id = match ($this->app_type) {
             AppType::API => 'api_' . $user_id,
-            AppType::CHATROOM => 'usertask_' . $user_id
+            AppType::CHATROOM => 'usertask_' . $user_id,
         };
         $this->modelfile = $this->processModelfile($modelfile);
         $user = User::find($user_id);
@@ -143,9 +142,10 @@ class RequestChat implements ShouldQueue
      */
     public function handle(): void
     {
+        ignore_user_abort(true);
+        set_time_limit(0);
         $this->kernel_location = \App\Models\SystemSetting::where('key', 'kernel_location')->first()->value;
         $client = new Client(['timeout' => 300]);
-        Log::channel('analyze')->Info($this->channel);
         if ($this->history_id > 0 && $this->app_type == AppType::CHATROOM) {
             if (Histories::find($this->history_id) && Histories::find($this->history_id)->msg != '* ...thinking... *' && $this->preserved_output == '') {
                 Log::Debug('Hmmm');
@@ -197,25 +197,26 @@ class RequestChat implements ShouldQueue
             ]);
             $stream = $response->getBody();
             $buffer = new Utf8Buffer();
+            $buffer->addChunk($this->preserved_output);
             while (!$stream->eof()) {
                 $chunk = \GuzzleHttp\Psr7\Utils::readLine($stream);
                 // Extract text response from SSE data
-                if (str_starts_with($chunk, "data: ")) {
-                    $json = substr($chunk, strlen("data: "));
+                if (str_starts_with($chunk, 'data: ')) {
+                    $json = substr($chunk, strlen('data: '));
                     $resp = json_decode($json, true);
-                    $resp_chunks = $resp['delta'] ?? array();
-                    $chunk = "";
+                    $resp_chunks = $resp['delta'] ?? [];
+                    $chunk = '';
                     foreach ($resp_chunks as $resp_chunk) {
-                        $type = $resp_chunk["type"] ?? null;
+                        $type = $resp_chunk['type'] ?? null;
                         switch ($type) {
                             case 'text':
-                                $chunk .= $resp_chunk["text"]["value"] ?? '';
+                                $chunk .= $resp_chunk['text']['value'] ?? '';
                                 break;
                             case 'log':
-                                $chunk .= "\n[" . ($resp_chunk["log"]["level"] ?? '') . "] " . ($resp_chunk["log"]["text"] ?? '');
+                                $chunk .= "\n[" . ($resp_chunk['log']['level'] ?? '') . '] ' . ($resp_chunk['log']['text'] ?? '');
                                 break;
                             case 'exit_code':
-                                $executorExitCode = $resp_chunk["exit_code"];
+                                $executorExitCode = $resp_chunk['exit_code'];
                                 break;
                             default:
                                 break;
@@ -224,7 +225,9 @@ class RequestChat implements ShouldQueue
                 }
                 $buffer->addChunk($chunk);
                 $message = $buffer->processBuffer();
-                if ($message === "") continue;
+                if ($message === '') {
+                    continue;
+                }
                 $outputChunk = $chatroomProcessor->addChunk($message);
                 if ($this->app_type == AppType::API) {
                     Redis::publish($this->channel, 'New ' . json_encode(['msg' => $message]));
@@ -239,12 +242,16 @@ class RequestChat implements ShouldQueue
         } catch (KuwaKernelException $e) {
             $this->endStreamWithMessage($e->getMessage());
         } finally {
+            if ($this->job->isReleased()) {
+                Log::channel('analyze')->Info('Job ' . $this->channel . ' was released back into the queue.');
+                return;
+            }
             $end = microtime(true);
             $elapsed = $end - $start;
             $fullOutput = $chatroomProcessor->getOutputChunk(finalize: true);
             Log::channel('analyze')->Info('Out:' . $this->access_code . '|' . $this->user_id . '|' . $this->history_id . '|' . $elapsed . '|' . strlen(trim($fullOutput)) . '|' . Carbon::createFromFormat('Y-m-d H:i:s', $this->msgtime)->diffInSeconds(Carbon::now()) . '|' . $fullOutput);
 
-            $finalOutput = "";
+            $finalOutput = '';
             if ($this->app_type == AppType::CHATROOM) {
                 $finalOutput = $fullOutput;
             }
@@ -302,7 +309,6 @@ class RequestChat implements ShouldQueue
     }
 }
 
-
 class Utf8Buffer
 {
     private $buffer = '';
@@ -356,7 +362,7 @@ function try_decode_json(string $jsonString): array
 
     if ($decodedJson === false && json_last_error() !== JSON_ERROR_NONE) {
         Log::channel('analyze')->Info("JSON decode error.\n" . $jsonString);
-        throw new \RuntimeException("JSON decode error.");
+        throw new \RuntimeException('JSON decode error.');
     }
 
     return $decodedJson;
@@ -368,17 +374,11 @@ class ChatroomProcessor
      * A processor to process the input from chatroom and format the executor response of multi-chat chatroom.
      * It handles input sanitization, warning message extraction, and output formatting for a multi-chat application.
      */
-    public static $inputFilters = [
-        WarningMessages::DEFAULT_ERROR,
-        WarningMessages::NO_EXECUTOR,
-        WarningMessages::EMPTY_RESPONSE,
-        WarningMessages::KUWA_WARNING,
-        WarningMessages::KUWA_WARNING_ZH,
-    ];
+    public static $inputFilters = [WarningMessages::DEFAULT_ERROR, WarningMessages::NO_EXECUTOR, WarningMessages::EMPTY_RESPONSE, WarningMessages::KUWA_WARNING, WarningMessages::KUWA_WARNING_ZH];
 
     private $bufferEnabled = false;
-    private $warningBuffer = "";
-    private $fullOutput = "";
+    private $warningBuffer = '';
+    private $fullOutput = '';
     private $kuwaFlag = false;
     private $warningMessages = [];
 
@@ -409,11 +409,7 @@ class ChatroomProcessor
             }
         }
         $lastUserMessage = collect($decodedMessages)->where('isbot', false)->last();
-        $this->kuwaFlag = (
-            $lastUserMessage !== null &&
-            strpos(strtoupper($lastUserMessage->msg), strtoupper('kuwa')) !== false &&
-            trim(\App\Models\SystemSetting::where('key', 'safety_guard_location')->first()->value) === ''
-        );
+        $this->kuwaFlag = $lastUserMessage !== null && strpos(strtoupper($lastUserMessage->msg), strtoupper('kuwa')) !== false && trim(\App\Models\SystemSetting::where('key', 'safety_guard_location')->first()->value) === '';
 
         return json_encode($decodedMessages);
     }

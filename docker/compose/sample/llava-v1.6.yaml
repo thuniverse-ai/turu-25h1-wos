@@ -3,7 +3,7 @@ services:
     image: kuwaai/model-executor
     environment:
       EXECUTOR_TYPE: huggingface
-      EXECUTOR_ACCESS_CODE: llava-v1.6-7b
+      EXECUTOR_ACCESS_CODE: .model/llava-hf/llava-v1.6-mistral
       EXECUTOR_NAME: LLaVA v1.6 7B
       EXECUTOR_IMAGE: llava.png # Refer to src/multi-chat/public/images
       # HUGGING_FACE_HUB_TOKEN: ${HUGGING_FACE_HUB_TOKEN}

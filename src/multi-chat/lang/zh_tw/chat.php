@@ -19,6 +19,8 @@ return [
     'button.delete' => '刪除',
     'button.copy' => '複製',
     'button.like' => '讚',
+    'button.edit' => '修改',
+    'button.save' => '保存修改',
     'button.dislike' => '倒讚',
     'button.translate' => '用該模型翻譯',
     'button.quote' => '引用該訊息',
@@ -34,8 +36,10 @@ return [
     'button.import' => '匯入',
     'button.feedback' => '送出意見',
 
-    'tooltip.json_btn' => '無跳脫的JSON格式',
-    'tooltip.TSV' => 'Tab分隔，可由Excel讀入',
+    'tooltip.json_btn' => '將聊天紀錄轉換成JSON格式並下載',
+    'tooltip.TSV' => '將聊天紀錄轉換成TXT格式(Tab分隔)，可由Excel讀入',
+    'tooltip.PDF' => '將聊天紀錄轉換為PDF格式',
+    'tooltip.DOC' => '將聊天紀錄轉換為Word格式',
     
     'label.TSV' => 'Tab分隔資料(.txt檔)',
     'label.JSON' => 'JSON格式(.json檔)',

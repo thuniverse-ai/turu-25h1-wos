@@ -179,8 +179,13 @@ class Bots extends Model
                     ->orWhere(function ($query) {
                         $query->where('bots.visibility', '=', 3)->where('bots.owner_id', '=', Auth::user()->id);
                     })
-                    ->orWhere(function ($query) {
-                        $query->where('bots.visibility', '=', 2)->where('users.group_id', '=', Auth::user()->group_id);
+                    ->when(!Auth::user()->hasPerm("tab_Manage"), function ($query) {
+                        $query->orWhere(function ($query) {
+                            $query->where('bots.visibility', '=', 2)->where('users.group_id', '=', Auth::user()->group_id);
+                        });
+                    })
+                    ->when(Auth::user()->hasPerm("tab_Manage"), function ($query) {
+                        $query->orwhere('bots.visibility', '=', 2);
                     });
             })
             ->select('llms.*', 'bots.*', DB::raw('COALESCE(bots.description, llms.description) as description'), DB::raw('COALESCE(bots.config, llms.config) as config'), DB::raw('COALESCE(bots.image, llms.image) as image'), 'llms.name as llm_name', 'llms.updated_at as updated_at', 'healthy')

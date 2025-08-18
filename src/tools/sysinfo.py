@@ -79,7 +79,7 @@ def get_kernel_info():
     kernel_debug_url = urljoin(os.environ.get("KUWA_KERNEL_BASE_URL"), "./worker/debug")
 
     try:
-        resp = requests.get(kernel_debug_url, headers={"Accept":"application/json"})
+        resp = requests.get(kernel_debug_url, headers={"Accept":"application/json"}, timeout=5)
         resp.raise_for_status()
         registered_executors = resp.json()
         result.extend([

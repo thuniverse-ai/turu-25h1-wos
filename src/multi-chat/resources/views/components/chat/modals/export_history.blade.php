@@ -80,9 +80,25 @@
                 <a data-tooltip-target="export_pdf_btn" target="_blank"
                     href="{{ route('room.export_pdf', request()->route('room_id')) }}"
                     class="bg-green-500 hover:bg-green-600 px-3 py-2 rounded cursor-pointer text-white">{{ __('chat.button.download.PDF') }}</a>
+                <div id="export_pdf_btn" role="tooltip"
+                    class="absolute z-10 inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm tooltip dark:bg-gray-600 opacity-0 invisible"
+                    style="position: absolute; inset: auto auto 0px 0px; margin: 0px; transform: translate3d(352.8px, -108px, 0px);"
+                    data-popper-placement="top">
+                    {{ __('chat.tooltip.PDF') }}
+                    <div class="tooltip-arrow" data-popper-arrow=""
+                        style="position: absolute; left: 0px; transform: translate3d(89.6px, 0px, 0px);"></div>
+                </div>
                 <a data-tooltip-target="export_doc_btn" target="_blank"
                     href="{{ route('room.export_doc', request()->route('room_id')) }}"
                     class="bg-green-500 hover:bg-green-600 px-3 py-2 rounded cursor-pointer text-white">{{ __('chat.button.download.DOC') }}</a>
+                <div id="export_doc_btn" role="tooltip"
+                    class="absolute z-10 inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm tooltip dark:bg-gray-600 opacity-0 invisible"
+                    style="position: absolute; inset: auto auto 0px 0px; margin: 0px; transform: translate3d(352.8px, -108px, 0px);"
+                    data-popper-placement="top">
+                    {{ __('chat.tooltip.DOC') }}
+                    <div class="tooltip-arrow" data-popper-arrow=""
+                        style="position: absolute; left: 0px; transform: translate3d(89.6px, 0px, 0px);"></div>
+                </div>
             </div>
         </div>
     </div>

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\SystemSetting;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\Process\Process;
 
 class WorkerController extends Controller
@@ -50,6 +52,11 @@ class WorkerController extends Controller
             // Generate log file name if needed
             $logFile = $logFileBase ? self::generateLogFileName($logFileBase) : null;
 
+            // Ensure the directory of log file exist
+            if (!is_null($logFile) && !is_dir(dirname($logFile))){
+                mkdir(dirname($logFile), recursive:true);
+            }
+
             // Prepare the command
             $command = PHP_OS_FAMILY === 'Windows' ? ($logFile ? "start /B php \"{$artisanPath}\" {$commandName} >> \"{$logFile}\"" : "start /B php \"{$artisanPath}\" {$commandName}") : ($logFile ? "php {$artisanPath} {$commandName} >> {$logFile} 2>&1 &" : "php {$artisanPath} {$commandName} &");
 
@@ -65,8 +72,12 @@ class WorkerController extends Controller
 
                 if ($logFile) {
                     // Wait until the log file is created
-                    while (!file_exists($logFile)) {
+                    while (!file_exists($logFile) && $count >= 0) {
                         usleep(100000);
+                        $count -= 1;
+                    }
+                    if ($count < 0){
+                        throw new Exception("The log file \"$logFile\" is not created.");
                     }
                 }
             } catch (\Exception $e) {
@@ -163,7 +174,9 @@ class WorkerController extends Controller
 
         if (PHP_OS_FAMILY === 'Windows') {
             // Use PowerShell to get command line and PID of php.exe processes
-            $cmd = 'powershell -command "Get-CimInstance Win32_Process -Filter \"Name=\'php.exe\'\" | Select-Object CommandLine, ProcessId"';
+            $cmd = <<<CMD
+            powershell -command "Get-CimInstance Win32_Process -Filter \"Name='php.exe'\" | Select-Object CommandLine, ProcessId"
+            CMD;
             $processes = shell_exec($cmd);
 
             // Process the output

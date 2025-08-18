@@ -1,0 +1,3 @@
+username=test@test.test
+password=test
+autologin=false

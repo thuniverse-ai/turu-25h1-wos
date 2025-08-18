@@ -104,7 +104,7 @@ Currently, it supports customization of the main logo of the application, the ho
 ![](./img/welcome-footer-zh-310bb3644ca609c871efaf0c165173d2.png)
 
 ## Kuwa Kernel
-Currently, the main configuration file for the Kernel is located under `genai-os/kernel/src/variable.py`.
+Currently, the main configuration file for the Kernel is located under `kuwa-aios/kernel/src/variable.py`.
 
 ```
 version = "v1.0"    # Kuwa Kernel version, do not modify

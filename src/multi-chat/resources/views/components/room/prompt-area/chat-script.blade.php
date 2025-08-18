@@ -84,17 +84,7 @@
                 }
             });
 
-            if ($chattable && $("#chat_input").val().trim() == "" && quoted.length == 1) {
-                $("#chat_input").val(histories[quoted[0][1]]);
-                this.submit();
-                $chattable = false
-                $("#submit_msg").hide()
-                if ($("#upload_btn")) $("#upload_btn").hide()
-                if (!isMac) {
-                    $("#chat_input").val("{{ __('chat.placeholder.processing') }}")
-                }
-                $("#chat_input").prop("readonly", true)
-            } else if ($chattable && (($("#chat_input").val().trim() != "") || quoted.length != 0)) {
+            if ($chattable && !allDisabled && (($("#chat_input").val().trim() != "") || quoted.length != 0)) {
                 tmp = ""
                 for (var i in quoted) {
                     @if (App::environment('arena') || $llms->count() == 1)

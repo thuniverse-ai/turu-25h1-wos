@@ -27,7 +27,7 @@ def get_key():
 
 client = KuwaClient(
     base_url="https://dev.thuniverse.ai",
-    model="geminipro",
+    model=".model:google/gemini",
     auth_token=get_key()
 )
 

@@ -3,8 +3,8 @@
 # cu121: nvidia/cuda:12.1.1-runtime-ubuntu22.04
 ARG BASE_IMAGE=nvidia/cuda:12.1.1-runtime-ubuntu22.04
 FROM ${BASE_IMAGE} AS build
-# x86_64, aarch64
-ARG ARCH=x86_64
+# linux/amd64, linux/arm64
+ARG TARGETPLATFORM
 # cpu, cu121
 ARG IMAGE_VARIANT="cpu"
 
@@ -17,14 +17,22 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 WORKDIR /usr/src/kuwa
 
-COPY docker/executor/requirements-${ARCH}-${IMAGE_VARIANT}.txt.lock ./requirements.txt.lock
+COPY docker/executor/requirements*.txt.lock ./
 COPY .git .git
 COPY src/library src/library
 COPY src/executor src/executor
 COPY src/kernel src/kernel
 RUN --mount=type=cache,target=/root/.cache/uv \
+	if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
+    	ARCH="x86_64"; \
+	elif [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
+    	ARCH="aarch64"; \
+	else \
+    	echo "Unsupported platform: $TARGETPLATFORM"; \
+    	exit 1; \
+	fi; \
     uv pip sync --force-reinstall --system \
-    --link-mode copy --index-strategy unsafe-best-match requirements.txt.lock
+    --link-mode copy --index-strategy unsafe-best-match requirements-${ARCH}-${IMAGE_VARIANT}.txt.lock
 
 # -----------------------------
 ARG BASE_IMAGE=nvidia/cuda:12.1.1-runtime-ubuntu22.04

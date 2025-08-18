@@ -17,7 +17,7 @@ v0.3.0 has added the RAG toolchain, which allows users to drag and drop their on
 ![](./img/2024-05-19-dbqa-creation/result.png)  
 
 ## Docker Version Instruction
-1. Refer to the document [`genai-os/src/toolchain/README.md`](https://github.com/kuwaai/kuwa-aios/blob/main/src/toolchain/README.md) to use the command to create vector database
+1. Refer to the document [`kuwa-aios/src/toolchain/README.md`](https://github.com/kuwaai/kuwa-aios/blob/main/src/toolchain/README.md) to use the command to create vector database
 2. Refer to `docker/compose/dbqa.yaml` to create the DB QA Executor.  
    Change the `</path/to/vector-database>` in the volume to the location of the vector database on the Host,  
    `EXECUTOR_NAME` can be changed to an easy-to-remember name.  
