@@ -171,7 +171,23 @@ if not exist "..\src\multi-chat\.env" (
 
 set "PATH=%~dp0packages\%node_folder%;%PATH%"
 
-REM Production update
+REM Make Kuwa root
+echo Initializing the filesystem hierarchy of Kuwa.
+mkdir "%KUWA_ROOT%\bin"
+mkdir "%KUWA_ROOT%\database"
+mkdir "%KUWA_ROOT%\custom"
+mkdir "%KUWA_ROOT%\bootstrap\bot"
+xcopy /s /y /q ..\src\bot\init "%KUWA_ROOT%\bootstrap\bot"
+xcopy /s /y /q ..\src\tools "%KUWA_ROOT%\bin"
+rd /S /Q "%KUWA_ROOT%\bin\test"
+pushd "%KUWA_ROOT%\bin"
+for %%f in (*) do (
+  attrib +r "%%f"
+  icacls "%%f" /grant Everyone:RX
+)
+popd
+
+REM Production update of multi-chat
 echo Initializing multi-chat
 SET HTTP_PROXY_REQUEST_FULLURI=0
 pushd "..\src\multi-chat"
@@ -268,22 +284,6 @@ for %%i in ("postinstall\*.bat") do (
 REM Download Pre-integrated Model
 echo Downloading pre-integrated models.
 python ..\src\executor\docqa\download_model.py
-
-REM Make Kuwa root
-echo Initializing the filesystem hierarchy of Kuwa.
-mkdir "%KUWA_ROOT%\bin"
-mkdir "%KUWA_ROOT%\database"
-mkdir "%KUWA_ROOT%\custom"
-mkdir "%KUWA_ROOT%\bootstrap\bot"
-xcopy /s /y /q ..\src\bot\init "%KUWA_ROOT%\bootstrap\bot"
-xcopy /s /y /q ..\src\tools "%KUWA_ROOT%\bin"
-rd /S /Q "%KUWA_ROOT%\bin\test"
-pushd "%KUWA_ROOT%\bin"
-for %%f in (*) do (
-  attrib +r "%%f"
-  icacls "%%f" /grant Everyone:RX
-)
-popd
 
 echo Installation is complete. Please wait for any other open Command Prompts to exit. You may need to manually close them if they don't close automatically.
 goto :eof
