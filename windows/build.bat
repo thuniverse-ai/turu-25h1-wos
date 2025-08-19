@@ -175,16 +175,36 @@ REM Production update
 echo Initializing multi-chat
 SET HTTP_PROXY_REQUEST_FULLURI=0
 pushd "..\src\multi-chat"
+:: Install PHP dependencies
 call php ..\..\windows\packages\composer.phar install --no-dev --optimize-autoloader --no-interaction
+
+:: Generate app key
 call php artisan key:generate --force
-call php artisan db:seed --class=InitSeeder --force
+
+:: Run DB migration and seeder
 call php artisan migrate --force
+call php artisan db:seed --class=InitSeeder --force
+
+:: Clean up old storage links and files
 rmdir /Q /S public\storage
+rmdir /Q /S storage\app\public\root\custom
+rmdir /Q /S storage\app\public\root\database
+rmdir /Q /S storage\app\public\root\bin
+rmdir /Q /S storage\app\public\root\bot
+rmdir /Q /S storage\app\public\root\bootstrap\bot
+
+:: Create new storage link
 call php artisan storage:link
+
+:: Install and audit JS dependencies
 call npm.cmd install
 call npm.cmd audit fix
 call npm.cmd ci --no-audit --no-progress
+
+:: Build frontend assets
 call npm.cmd run build
+
+:: Cache and optimize Laravel
 call php artisan optimize
 call php artisan route:cache
 call php artisan view:cache
@@ -235,7 +255,7 @@ if %errorlevel% neq 0 (
     echo Installing @mermaid-js/mermaid-cli...
     call npm.cmd install -g "@mermaid-js/mermaid-cli" --no-audit --no-fund
 ) else (
-    for /f "delims=" %%i in ('mmdc -v') do set "MERMAID_VERSION=%%i"
+    for /f "delims=" %%i in ('mmdc --version') do set "MERMAID_VERSION=%%i"
     REM Optional: if you want to check a specific version, insert it here
     echo mermaid-cli %MERMAID_VERSION% already installed. Skipping.
 )

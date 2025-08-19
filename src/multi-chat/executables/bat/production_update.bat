@@ -16,6 +16,7 @@ rmdir /Q /S storage\app\public\root\custom
 rmdir /Q /S storage\app\public\root\database
 rmdir /Q /S storage\app\public\root\bin
 rmdir /Q /S storage\app\public\root\bot
+rmdir /Q /S storage\app\public\root\bootstrap\bot
 
 :: Create new storage link
 call php artisan storage:link --ansi

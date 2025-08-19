@@ -68,8 +68,8 @@ return [
     'links' => [
         public_path('storage') => storage_path('app/public'),
         storage_path('app/public/root/custom') => resource_path('views/components/custom'),
-        storage_path('app/public/root/database') => base_path('../../docker/root/database'),
-        storage_path('app/public/root/bin') => base_path('../../docker/root/bin'),
-        storage_path('app/public/root/bot') => base_path('../../docker/root/bootstrap/bot'),
+        storage_path('app/public/root/database') => realpath(config("app.KUWA_ROOT") . '/database'),
+        storage_path('app/public/root/bin') => realpath(config("app.KUWA_ROOT") . '/bin'),
+        storage_path('app/public/root/bootstrap/bot') => realpath(config("app.KUWA_ROOT") . '/bootstrap/bot'),
     ],
 ];

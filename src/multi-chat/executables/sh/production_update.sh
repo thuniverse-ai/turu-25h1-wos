@@ -12,11 +12,12 @@ php artisan migrate --force
 php artisan db:seed --class=InitSeeder --force
 
 # Clean up old storage links and directories
-rm -rf public/storage
-rm -rf storage/app/public/root/custom
-rm -rf storage/app/public/root/database
-rm -rf storage/app/public/root/bin
-rm -rf storage/app/public/root/bot
+rm -f public/storage
+rm -f storage/app/public/root/custom
+rm -f storage/app/public/root/database
+rm -f storage/app/public/root/bin
+rm -f storage/app/public/root/bot
+rm -f storage/app/public/root/bootstrap/bot
 
 # Recreate storage symlink
 php artisan storage:link
