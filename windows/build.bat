@@ -234,6 +234,7 @@ popd
 REM Sync locked Python dependencies
 echo Syncing Python dependencies
 pushd ".."
+set SETUPTOOLS_SCM_PRETEND_VERSION=0.4.0
 uv pip sync --reinstall --system windows\src\requirements.txt.lock
 popd
 
