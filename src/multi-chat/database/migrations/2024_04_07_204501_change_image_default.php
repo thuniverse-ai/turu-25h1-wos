@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('llms', function (Blueprint $table) {
-            $table->string('image')->change()->nullable()->default(null);
+            $table->string('image')->nullable()->default(null)->change();
         });
     }
 

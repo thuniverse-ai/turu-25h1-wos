@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM php:8.1-cli AS build
+FROM --platform=$BUILDPLATFORM php:8.3-cli AS build
 
 RUN apt-get update
 
@@ -40,7 +40,7 @@ RUN rm -rf node_modules storage &&\
     mkdir -p storage
 
 #============================================
-FROM php:8.1-fpm
+FROM php:8.3-fpm
 
 # Align the UID and PID with Nginx
 RUN usermod -u 101 www-data &&\

@@ -25,7 +25,7 @@ docker exec -it kuwa-multi-chat-1 docker-entrypoint force-upgrade
 
 Since version 0.3.4, Kuwa Docker Images are downloaded pre-built from Docker Hub by default. To build images from source code, follow these steps:
 
-1. Ensure the `.git` directory is present within the `genai-os` directory.
+1. Ensure the `.git` directory is present within the `kuwa-aios` directory.
 2. Enable the containerd image store for [multi-platform builds](https://docs.docker.com/build/building/multi-platform/#enable-the-containerd-image-store)
     Add the following configuration to your `/etc/docker/daemon.json` file:
 

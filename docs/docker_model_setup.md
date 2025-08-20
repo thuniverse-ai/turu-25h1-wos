@@ -6,7 +6,7 @@ Gemini model is setted up by default, just enter your API key in `setting > API 
 
 ### 2. ChatGPT (OPENAI)
 
-1. Enter `genai-os/docker/compose` directory and copy the .yaml file.
+1. Enter `kuwa-aios/docker/compose` directory and copy the .yaml file.
 
 ```sh
 cp gemini.yaml chatgpt.yaml
@@ -43,7 +43,7 @@ mkdir gguf/taide
 curl -L -o "taide/taide-8b-a.3-q4_k_m.gguf" https://huggingface.co/nctu6/Llama3-TAIDE-LX-8B-Chat-Alpha1-GGUF/resolve/main/Llama3-TAIDE-LX-8B-Chat-Alpha1-Q4_K_M.gguf?download=true
 ```
 
-2. Enter `genai-os/docker/compose` directory and copy the .yaml file.
+2. Enter `kuwa-aios/docker/compose` directory and copy the .yaml file.
 ```sh
 cp llamacpp.yaml llamacpp-taide.yaml
 ```
@@ -70,7 +70,7 @@ If you faced the error `ModuleNotFoundError: No module named 'llama_cpp'`, pleas
 ollama pull <model name>
 ```
 
-2. Enter `genai-os/docker/compose` directory and copy the .yaml file.
+2. Enter `kuwa-aios/docker/compose` directory and copy the .yaml file.
 
 ```sh
 cp gemini.yaml ollama-<name>.yaml
@@ -94,7 +94,7 @@ Add `<yaml file name>` into `confs` array and execute `run.sh` again.
 
 1. Use LM Studio, a fast LLM deployment platform, to download model.
 
-2. Enter `genai-os/docker/compose` directory and copy the .yaml file.
+2. Enter `kuwa-aios/docker/compose` directory and copy the .yaml file.
 
 ```sh
 cp gemini.yaml lmstudio-<name>.yaml
@@ -118,7 +118,7 @@ Add `<yaml file name>` into `confs` array and execute `run.sh` again.
 
 1. Download the gguf file.
 
-2. Enter `genai-os/docker/compose` directory and copy the .yaml file.
+2. Enter `kuwa-aios/docker/compose` directory and copy the .yaml file.
 ```sh
 cp llamacpp.yaml llamacpp-<name>.yaml
 ```

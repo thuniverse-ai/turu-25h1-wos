@@ -177,6 +177,9 @@ def extract_packages():
                 "php artisan config:cache",]:
                 subprocess.call(cmd, cwd=multi_chat, shell=True)
         os.remove(os.path.abspath("init.txt"))
+    if os.path.exists("src\conf\init_models.txt"):
+        subprocess.call("python src\download_hf_models.py src\conf\init_models.txt", cwd=base_dir, shell=True)
+        os.remove(os.path.abspath("src\conf\init_models.txt"))
     if not os.path.exists("packages\composer.bat"):
         with open("packages\composer.bat", 'w') as f:
             f.write('php "%~dp0composer.phar" %*\n')

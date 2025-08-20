@@ -28,7 +28,7 @@ cobble==0.1.4             # via mammoth
 colorama==0.4.6           # via click, colorlog, tqdm, uvicorn
 coloredlogs==15.0.1       # via onnxruntime
 colorlog==6.9.0           # via optuna
-compressed-rtf @ https://www.piwheels.org/simple/compressed-rtf/compressed_rtf-1.0.6-py3-none-any.whl#sha256=d6729750a95e2350a7ec0fd3284852a1f7f7e35bfae2699c67f9f4a9b7e6063d  # via -r windows/src/version_patch/ipex-llm/windows/src/requirements.in
+compressed-rtf @ https://archive1.piwheels.org/simple/compressed-rtf/compressed_rtf-1.0.6-py3-none-any.whl#sha256=d6729750a95e2350a7ec0fd3284852a1f7f7e35bfae2699c67f9f4a9b7e6063d  # via -r windows/src/version_patch/ipex-llm/windows/src/requirements.in
 contourpy==1.3.2          # via matplotlib
 courlan==1.3.2            # via trafilatura
 cryptography==44.0.2      # via pdfminer-six
@@ -95,10 +95,10 @@ julius==0.2.7             # via torch-audiomentations
 justext==3.0.2            # via trafilatura
 kittycad==0.7.6           # via -r src/bot/text-to-cad/requirements.in
 kiwisolver==1.4.8         # via matplotlib
-kuwa-client @ file:///./src/library/client  # via -r requirements.in
-kuwa-executor @ file:///./src/executor  # via -r requirements.in
-kuwa-kernel @ file:///./src/kernel  # via -r requirements.in
-kuwa-rag @ file:///./src/library/rag  # via -r requirements.in
+./src/library/client      # via -r requirements.in
+./src/executor            # via -r requirements.in
+./src/kernel              # via -r requirements.in
+./src/library/rag         # via -r requirements.in
 langchain==0.3.24         # via kuwa-rag, langchain-community, -r src/executor/docqa/requirements.in, -r src/toolchain/requirements.in
 langchain-community==0.3.23  # via kuwa-rag, -r src/executor/docqa/requirements.in, -r src/toolchain/requirements.in
 langchain-core==0.3.56    # via langchain, langchain-community, langchain-huggingface, langchain-text-splitters
@@ -270,3 +270,6 @@ xxhash==3.5.0             # via -r src/executor/docqa/requirements.in
 yarl==1.20.0              # via aiohttp
 zipp==3.21.0              # via importlib-metadata
 zstandard==0.23.0         # via langsmith
+
+# uv version: uv 0.8.9 (68c0bf8a2 2025-08-11)
+

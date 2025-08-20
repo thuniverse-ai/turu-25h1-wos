@@ -15,19 +15,19 @@ for %%I in ("%url_RunHiddenConsole%") do set "filename_RunHiddenConsole=%%~nxI"
 set "RunHiddenConsole_folder=%filename_RunHiddenConsole:~0,-4%"
 
 REM Variables for Node.js
-set "url_NodeJS=https://nodejs.org/dist/v20.11.1/node-v20.11.1-win-x64.zip"
+set "url_NodeJS=https://nodejs.org/dist/v20.9.0/node-v20.9.0-win-x64.zip"
 for %%I in ("%url_NodeJS%") do set "filename_NodeJS=%%~nxI"
 set "node_folder=%filename_NodeJS:~0,-4%"
 for /f "tokens=2 delims=-" %%v in ("%filename_NodeJS%") do set "version_NodeJS=%%v"
 
 REM Variables for PHP
-set "url_PHP=https://windows.php.net/downloads/releases/php-8.1.32-Win32-vs16-x64.zip"
+set "url_PHP=https://windows.php.net/downloads/releases/php-8.3.24-Win32-vs16-x64.zip"
 for %%I in ("%url_PHP%") do set "filename_PHP=%%~nxI"
 set "php_folder=%filename_PHP:~0,-4%"
 for /f "tokens=2 delims=-" %%v in ("%filename_PHP%") do set "version_PHP=%%v"
 
 REM Variables for fallback version of PHP
-set "url_PHP_Fallback=https://windows.php.net/downloads/releases/archives/php-8.1.31-Win32-vs16-x64.zip"
+set "url_PHP_Fallback=https://windows.php.net/downloads/releases/archives/php-8.3.24-Win32-vs16-x64.zip"
 for %%I in ("%url_PHP_Fallback%") do set "filename_PHP_Fallback=%%~nxI"
 set "php_folder_Fallback=%filename_PHP_Fallback:~0,-4%"
 for /f "tokens=2 delims=-" %%v in ("%filename_PHP_Fallback%") do set "version_PHP_Fallback=%%v"

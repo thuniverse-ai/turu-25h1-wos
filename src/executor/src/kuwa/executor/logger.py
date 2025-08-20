@@ -31,12 +31,12 @@ class ExecutorLoggerFactory:
         "formatters": {
             "default": {
                 "()": "uvicorn.logging.ColourizedFormatter",
-                "format": "%(asctime)s [%(name)-13s] %(levelprefix)-4s %(message)s",
+                "format": "%(message)s",
                 "datefmt": "%Y-%m-%d %H:%M:%S",
             },
             "access": {
                 "()": "uvicorn.logging.AccessFormatter",
-                "format": '%(asctime)s [%(name)-13s] %(levelprefix)-4s %(client_addr)s - "%(request_line)s" %(status_code)s',
+                "format": '%(client_addr)s - "%(request_line)s" %(status_code)s',
                 "datefmt": "%Y-%m-%d %H:%M:%S",
             },
         },
@@ -73,10 +73,22 @@ class ExecutorLoggerFactory:
         },
     }
 
-    def __init__(self, level="INFO"):
+    def __init__(self, level="INFO", access_code=None):
         level = level.upper()
         self.conf = self.template.copy()
         self.conf["root"]["level"] = level
+        log_prefix = (
+            "%(asctime)s [%(name)-13s] %(levelprefix)-4s"
+            if access_code is None
+            else f"%(asctime)s [{access_code}][%(name)-13s] %(levelprefix)-4s"
+        )
+
+        for formatter in self.conf["formatters"].keys():
+            original_format = self.conf["formatters"][formatter]["format"]
+            self.conf["formatters"][formatter]["format"] = (
+                f"{original_format} {log_prefix}"
+            )
+
         for logger in self.conf["loggers"].keys():
             self.conf["loggers"][logger]["level"] = level
 

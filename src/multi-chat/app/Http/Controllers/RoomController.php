@@ -641,6 +641,7 @@ class RoomController extends Controller
             if ($firstUrl) {
                 $raw_chat_title = $this->getWebPageTitle($firstUrl) ?: $this->getFilenameFromURL($firstUrl);
                 $chatname = rawurldecode($raw_chat_title);
+                $chatname = mb_convert_encoding($chatname, 'UTF-8', 'UTF-8');
             }
 
             $Room = ChatRoom::find($this->create_room($request));

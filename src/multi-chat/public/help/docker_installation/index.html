@@ -288,7 +288,7 @@ sudo systemctl restart docker
 </ol>
 <p>```sh=
 git clone https://github.com/kuwaai/kuwa-aios/
-cd genai-os/docker</p>
+cd kuwa-aios/docker</p>
 <pre><code>
 2. Change Configuration Files
 
@@ -325,7 +325,7 @@ ADMIN_EMAIL=&quot;admin@${DOMAIN_NAME}&quot; # Website default administrator log
 <h3 id="6-optional-building-docker-images-from-source-code">6. (Optional) Building Docker Images from Source Code</h3>
 <p>Since version 0.3.4, Kuwa Docker Images are downloaded pre-built from Docker Hub by default. To build images from source code, follow these steps:</p>
 <ol>
-<li>Ensure the <code>.git</code> directory is present within the <code>genai-os</code> directory.</li>
+<li>Ensure the <code>.git</code> directory is present within the <code>kuwa-aios</code> directory.</li>
 <li>
 <p>Enable the containerd image store for <a href="https://docs.docker.com/build/building/multi-platform/#enable-the-containerd-image-store">multi-platform builds</a>
     Add the following configuration to your <code>/etc/docker/daemon.json</code> file:</p>

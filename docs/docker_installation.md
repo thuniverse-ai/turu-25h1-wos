@@ -140,7 +140,7 @@ sudo systemctl restart docker
 
 ```sh=
 git clone https://github.com/kuwaai/kuwa-aios/
-cd genai-os/docker
+cd kuwa-aios/docker
 ```
 
 2. Change Configuration Files

@@ -33,7 +33,7 @@ cobble==0.1.4             # via mammoth
 colorama==0.4.6           # via click, colorlog, ipython, tqdm, uvicorn
 coloredlogs==15.0.1       # via onnxruntime, onnxruntime-qnn
 colorlog==6.9.0           # via optuna
-compressed-rtf @ https://www.piwheels.org/simple/compressed-rtf/compressed_rtf-1.0.6-py3-none-any.whl#sha256=d6729750a95e2350a7ec0fd3284852a1f7f7e35bfae2699c67f9f4a9b7e6063d  # via -r windows/src/version_patch/cpu/windows/src/requirements.in
+compressed-rtf @ https://archive1.piwheels.org/simple/compressed-rtf/compressed_rtf-1.0.6-py3-none-any.whl#sha256=d6729750a95e2350a7ec0fd3284852a1f7f7e35bfae2699c67f9f4a9b7e6063d  # via -r windows/src/version_patch/cpu/windows/src/requirements.in
 contextlib2==21.6.0       # via schema
 contourpy==1.3.2          # via matplotlib
 courlan==1.3.2            # via trafilatura
@@ -219,7 +219,7 @@ pytorch-metric-learning==2.8.1  # via pyannote-audio
 pytz==2025.2              # via dateparser, pandas
 pywin32==310              # via oschmod
 pyyaml==6.0.2             # via accelerate, ctranslate2, datasets, gradio, gradio-i18n, huggingface-hub, hyperpyyaml, kuwa-executor, langchain, langchain-community, langchain-core, lightning, omegaconf, optuna, pyannote-database, pyannote-pipeline, python-i18n, pytorch-lightning, transformers, uvicorn
-qai-appbuilder @ https://dl.thuniverse.ai/turu-25h1-wos/qai_appbuilder-2.32.0+kuwa-cp310-cp310-win_amd64.whl  # via -r src/executor/qnn_genie/requirements.in
+qai-appbuilder @ https://dl.thuniverse.ai/turu-25h1-wos/qai_appbuilder-2.34.0+turu-cp310-cp310-win_amd64.whl  # via -r src/executor/qnn_genie/requirements.in
 qai-hub==0.29.0           # via qai-hub-models
 qai-hub-models==0.28.2    # via -r src/executor/speech_recognition/requirements-onnx.in
 rank-bm25==0.2.2          # via kuwa-rag
@@ -311,5 +311,5 @@ zstandard==0.23.0         # via langsmith
 # The following packages were excluded from the output:
 # onnxruntime
 
-# uv version: uv 0.7.3 (3c413f74b 2025-05-07)
+# uv version: uv 0.8.9 (68c0bf8a2 2025-08-11)
 

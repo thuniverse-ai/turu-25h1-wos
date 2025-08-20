@@ -128,17 +128,17 @@ class BaseExecutor:
 
     def _setup(self):
         # Setup logger
+        self.access_codes = self.args.access_code
+        if self.access_codes is None or len(self.access_codes) == 0:
+            raise ValueError("Argument --access_code is mandatory.")
         self.log_level = self.args.log.upper()
         logging.config.dictConfig(
-            ExecutorLoggerFactory(level=self.log_level).get_config()
+            ExecutorLoggerFactory(level=self.log_level, access_code=self.access_codes[0]).get_config()
         )
 
         # Registration information
         self.kernel_url = self.args.kernel_url
         self.ignore_kernel = self.args.ignore_kernel
-        self.access_codes = self.args.access_code
-        if self.access_codes is None or len(self.access_codes) == 0:
-            raise ValueError("Argument --access_code is mandatory.")
 
         # Serving URL
         self.host = self.args.host or socket.gethostbyname(socket.gethostname())

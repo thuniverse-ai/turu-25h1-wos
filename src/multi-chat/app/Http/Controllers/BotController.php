@@ -475,7 +475,7 @@ class BotController extends Controller
     public function listKnowledge(Request $request)
     {
         // Get the directory from the .env file
-        $directory = config('app.KNOWLEDGE_DIRECTORY');
+        $directory = realpath(config('app.KUWA_ROOT') . "/database");
 
         // Check if the directory exists
         if (!is_dir($directory)) {

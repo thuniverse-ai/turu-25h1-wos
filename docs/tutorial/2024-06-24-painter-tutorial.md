@@ -76,4 +76,4 @@ Display Options:
   --show_progress       Whether to show the progress of generation. (default: False)
 ```
 
-For more information, please refer to [genai-os/src/executor/image_generation/README.md](https://github.com/kuwaai/kuwa-aios/blob/main/src/executor/image_generation/README.md)
+For more information, please refer to [kuwa-aios/src/executor/image_generation/README.md](https://github.com/kuwaai/kuwa-aios/blob/main/src/executor/image_generation/README.md)

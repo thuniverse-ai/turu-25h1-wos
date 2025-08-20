@@ -47,7 +47,7 @@
 
 ### Method 2: Starting Executor using Docker
 
-1. Create a `llama3.yaml` file in the `genai-os/docker/` directory and fill in the following content. If you use method 1, you need to modify the `command` parameter in the compose file to `meta-llama/Meta-Llama-3-8B-Instruct`.
+1. Create a `llama3.yaml` file in the `kuwa-aios/docker/` directory and fill in the following content. If you use method 1, you need to modify the `command` parameter in the compose file to `meta-llama/Meta-Llama-3-8B-Instruct`.
 ```yaml
 services:
   llama3-executor:

@@ -8,7 +8,7 @@ This Python library simplifies interaction with the Kuwa GenAI OS APIs.
 ## Installation
 
 ```bash
-cd genai-os/src/library/client
+cd kuwa-aios/src/library/client
 pip install .
 ```
 
