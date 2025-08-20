@@ -1,4 +1,4 @@
-import os, subprocess, shutil, requests, time, sys, re, psutil, concurrent.futures, threading
+import os, subprocess, shutil, requests, time, sys, re, psutil, concurrent.futures, threading, random
 
 processes = []
 base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -219,9 +219,11 @@ def start_servers():
         if os.path.isdir(os.path.join(executors_dir, folder))
     ]
 
-    def process_folder(folder_path):
+    def process_folder(folder_path, max_init_delay_sec:int=10):
         run_bat = os.path.join(folder_path, "run.bat")
         init_bat = os.path.join(folder_path, "init.bat")
+        # Random delay to avoid competing database's lock
+        time.sleep(random.uniform(0, max_init_delay_sec))
         try:
             if os.path.exists(init_bat) and not os.path.exists(run_bat):
                 subprocess.call("init.bat quick", cwd=folder_path, shell=True)
