@@ -9,7 +9,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 from tqdm import tqdm
 
-QNN_SDK_VERSION = "2.32.0.250228"
+QNN_SDK_VERSION = "2.34.0.250424"
 QNN_SDK_DL_URL = f"https://apigwx-aws.qualcomm.com/qsc/public/v1/api/download/software/sdks/Qualcomm_AI_Runtime_Community/All/{QNN_SDK_VERSION}/v{QNN_SDK_VERSION}.zip"
 QNN_SDK_ROOT = os.environ.get("QNN_SDK_ROOT", None)
 KUWA_ROOT = (

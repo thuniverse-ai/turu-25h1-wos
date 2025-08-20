@@ -8,12 +8,13 @@ from transformers import AutoTokenizer
 from functools import lru_cache
 import multiprocessing as mp
 from dataclasses import dataclass
+from importlib.metadata import version as pkg_version
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(os.path.dirname(os.path.abspath(Path(__file__).parent)))
 
 from kuwa.executor import LLMExecutor, Modelfile
-from qai_appbuilder.geniecontext import GenieContext
+from qai_appbuilder import GenieContext
 from huggingface_hub import snapshot_download
 
 sys.stdin.reconfigure(encoding="utf-8")
@@ -80,15 +81,16 @@ class ModelLoader:
         self.cached_model = {}
         self.cache_size = cache_size
 
-    def load_model(self, model_path_or_id):
+    def load_model(self, model_path_or_id:str, debug:bool=False):
         if os.path.exists(model_path_or_id):
             model_dir = model_path_or_id
         else:
             print(
-                f"Model path {model_path_or_id} not found. Trying download it from HF Hub.",
+                f"INFO: Model path {model_path_or_id} not found. Trying download it from HF Hub.",
                 flush=True,
             )
             model_dir = snapshot_download(repo_id=model_path_or_id)
+            print(f"INFO: Model {model_path_or_id} downloaded successfully.", flush=True)
 
         model = self.cached_model.pop(model_dir, None)
         if model is None:
@@ -96,7 +98,9 @@ class ModelLoader:
                 self._unload_least_used_model()
 
             with temporaryWorkingDirectory(model_dir):
-                model = GenieContext("genie_config.json")
+                print(f"INFO: Loading model {model_path_or_id} from {model_dir} ...", flush=True)
+                model = GenieContext("genie_config.json", debug=debug)
+                print(f"INFO: Model {model_path_or_id} loaded.", flush=True)
 
         self.cached_model[model_dir] = model
 
@@ -104,11 +108,12 @@ class ModelLoader:
 
     def _unload_least_used_model(self):
         least_use_model_id = next(iter(self.cached_model))
+        print(f"INFO: Unloading {least_use_model_id}", flush=True)
         model_to_free = self.cached_model.pop(least_use_model_id)
         model_to_free.Release()
         del model_to_free
         gc.collect()
-        print(f"Unloaded {least_use_model_id}", flush=True)
+        print(f"INFO: Unloaded {least_use_model_id}", flush=True)
 
 
 @dataclass
@@ -172,6 +177,7 @@ class QnnGenieExecutor(LLMExecutor):
         )
 
     def setup(self):
+        logger.debug("Version of qai_appbuilder=" + pkg_version("qai_appbuilder"))
         self.model_id = self.args.model
         self.hf_hub_model_id = self.args.tokenizer
         self.stop = mp.Event()
