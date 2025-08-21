@@ -125,7 +125,7 @@ begin
   AutoLoginCheckBox.Left := AccountPage.Edits[2].Left;
   AutoLoginCheckBox.Width := 300;
   AutoLoginCheckBox.Caption := 'Single User Mode';
-  AutoLoginCheckBox.Checked := False; 
+  AutoLoginCheckBox.Checked := True; 
   DownloadPage := CreateDownloadPage(SetupMessage(msgWizardPreparing), SetupMessage(msgPreparingDesc), @OnDownloadProgress);
   DownloadPage.ShowBaseNameInsteadOfUrl := True;
 end;
