@@ -1,4 +1,9 @@
-import os, subprocess, shutil, requests, time, sys, re, psutil, concurrent.futures, threading
+import os, subprocess, shutil, requests, time, sys, re, psutil, concurrent.futures, threading, random, glob
+
+MAX_WORKERS = 10
+MAX_RETRIES = 5
+INITIAL_DELAY = 2
+BOT_IMPORT_FAILURE_KEYWORDS = ("cannot be imported", "does not exist")
 
 processes = []
 base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -192,6 +197,22 @@ def extract_executor_access_code(path):
                 if m: return m.group(1).strip()
     return None
 
+def get_bot_access_code(file_path):
+    """Extracts the full KUWABOT base access code from a bot file."""
+    try:
+        with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+            for line in f:
+                if line.strip().upper().startswith('KUWABOT BASE'):
+                    match = re.search(r'KUWABOT\s+base\s+(.*)', line, re.IGNORECASE)
+                    if match:
+                        access_code = match.group(1).strip()
+                        # Remove quotes
+                        access_code = access_code.strip('"\'')
+                        return access_code
+    except Exception as e:
+        print(f"Could not read or parse bot file {file_path}: {e}")
+    return None
+
 def start_servers():
     redis_path = os.path.join(base_dir, "packages", os.environ.get("redis_folder", "redis"))
     rdb = os.path.join(redis_path, "dump.rdb")
@@ -211,7 +232,6 @@ def start_servers():
         try: requests.get("http://127.0.0.1:9000", timeout=1); break
         except: time.sleep(1)
 
-    exclude_args = []
     executors_dir = os.path.join(base_dir, "executors")
     folder_paths = [
         os.path.join(executors_dir, folder)
@@ -219,27 +239,82 @@ def start_servers():
         if os.path.isdir(os.path.join(executors_dir, folder))
     ]
 
-    def process_folder(folder_path):
-        run_bat = os.path.join(folder_path, "run.bat")
-        init_bat = os.path.join(folder_path, "init.bat")
+    def process_folder(folder_path, max_init_delay_sec:int=10):
+        run_bat_path = os.path.join(folder_path, "run.bat")
+        init_bat_path = os.path.join(folder_path, "init.bat")
+        artisan_commands = []
+        exclude_code = None
+        
+        time.sleep(random.uniform(0, max_init_delay_sec))
         try:
-            if os.path.exists(init_bat) and not os.path.exists(run_bat):
+            if os.path.exists(init_bat_path) and not os.path.exists(run_bat_path):
                 subprocess.call("init.bat quick", cwd=folder_path, shell=True)
-            if os.path.exists(run_bat):
-                subprocess.call("run.bat", cwd=folder_path, shell=True)
-                code = extract_executor_access_code(run_bat)
+            
+            if os.path.exists(run_bat_path):
+                other_commands_for_temp_script = []
+                
+                with open(run_bat_path, 'r', encoding='utf-8') as f:
+                    for line in f:
+                        if "php artisan" in line.lower():
+                            artisan_commands.append(line.strip())
+                        else:
+                            other_commands_for_temp_script.append(line)
+                
+                if other_commands_for_temp_script:
+                    temp_bat_name = f"temp_run_{random.randint(1000,9999)}.bat"
+                    temp_bat_path = os.path.join(folder_path, temp_bat_name)
+                    
+                    try:
+                        with open(temp_bat_path, 'w', encoding='utf-8') as temp_f:
+                            temp_f.writelines(other_commands_for_temp_script)
+                        
+                        subprocess.call(temp_bat_name, cwd=folder_path, shell=True)
+                    
+                    finally:
+                        if os.path.exists(temp_bat_path):
+                            os.remove(temp_bat_path)
+
+                code = extract_executor_access_code(run_bat_path)
                 if code:
-                    return f"--exclude={code}"
+                    exclude_code = f"--exclude={code}"
+                    
         except Exception as e:
             print(f"Error processing {folder_path}: {e}")
-        return None
+            
+        return (exclude_code, artisan_commands)
 
+    exclude_args = []
+    all_artisan_commands = []
     with concurrent.futures.ThreadPoolExecutor() as executor:
         futures = [executor.submit(process_folder, path) for path in folder_paths]
         for future in concurrent.futures.as_completed(futures):
-            result = future.result()
-            if result:
-                exclude_args.append(result)
+            try:
+                exclude_code, artisan_commands = future.result()
+                if exclude_code:
+                    exclude_args.append(exclude_code)
+                if artisan_commands:
+                    all_artisan_commands.extend(artisan_commands)
+            except Exception as e:
+                print(f"A task in process_folder generated an exception: {e}")
+                
+    excluded_access_codes = set()
+    for arg in exclude_args:
+        if arg.startswith('--exclude=') and len(arg) > 10:
+            excluded_access_codes.add(arg[10:])
+    
+    if excluded_access_codes:
+        print(f"Bots to be initialized separately (will be excluded from general import): {', '.join(excluded_access_codes)}")
+
+
+    if all_artisan_commands:
+        print("--- Executing collected artisan commands sequentially ---")
+        for command in all_artisan_commands:
+            print(f"Executing: {command}")
+            try:
+                subprocess.call(command, cwd=web_path, shell=True)
+            except Exception as e:
+                print(f"Error executing '{command}': {e}")
+        print("--- Finished executing artisan commands ---")
 
     if exclude_args:
         subprocess.call(
@@ -247,6 +322,7 @@ def start_servers():
             cwd=web_path,
             shell=True
         )
+
     http_server_runtime = os.environ.get("HTTP_Server_Runtime", "nginx")
     if (http_server_runtime == "apache"):
         apache_folder = os.path.join("Apache_" + os.environ.get("apache_folder", "apache"), "Apache24")
@@ -281,8 +357,77 @@ def start_servers():
 
     subprocess.call("php artisan model:reset-health", cwd=web_path, shell=True)
     time.sleep(4)
-    subprocess.call("src\\import_bots.bat", shell=True)
-    time.sleep(1)
+    
+    def import_bot(bot_file_path):
+        name = os.path.basename(bot_file_path)
+        command = f'php artisan bot:import "{bot_file_path}"'
+        
+        for attempt in range(MAX_RETRIES):
+            print(f"--- Importing {name} (Attempt {attempt + 1}/{MAX_RETRIES}) ---")
+            try:
+                result = subprocess.run(
+                    command, cwd=web_path, shell=True, capture_output=True,
+                    text=True, encoding="utf-8"
+                )
+                
+                output = result.stdout + result.stderr
+                with log_lock:
+                    print(output, end='')
+
+                is_success = result.returncode == 0
+                if is_success:
+                    for keyword in BOT_IMPORT_FAILURE_KEYWORDS:
+                        if keyword in output.lower():
+                            print(f"--- FAILED: Detected failure keyword '{keyword}' in output for {name}. ---")
+                            is_success = False
+                            break
+                
+                if is_success:
+                    print(f"--- SUCCESS: Finished import for {name} ---")
+                    return f"Success: {name}"
+                elif result.returncode != 0:
+                    print(f"--- FAILED: Import for {name} (Exit Code: {result.returncode}) ---")
+
+            except Exception as e:
+                print(f"--- EXCEPTION while importing {name}: {e} ---")
+
+            if attempt < MAX_RETRIES - 1:
+                delay = INITIAL_DELAY * (2 ** attempt) + random.uniform(0, 1)
+                print(f"--- Retrying {name} in {delay:.2f} seconds... ---")
+                time.sleep(delay)
+            else:
+                print(f"--- GIVING UP on {name} after {MAX_RETRIES} attempts. ---")
+                return f"Failed: {name}"
+
+    print("--- Preparing to import bots... ---")
+    bots_dir = os.path.join(kuwa_root, "bootstrap", "bot")
+    if os.path.isdir(bots_dir):
+        all_bot_files = [f for f in glob.glob(os.path.join(bots_dir, '*.*')) if os.path.isfile(f)]
+        
+        bot_files_to_import = []
+        print("Filtering bots based on initialization status...")
+        for bot_path in all_bot_files:
+            access_code = get_bot_access_code(bot_path)
+            if access_code and access_code in excluded_access_codes:
+                bot_files_to_import.append(bot_path)
+            else:
+                print(f"-> Excluding '{os.path.basename(bot_path)}' (access code: {access_code}) because it's not being used")
+
+        if bot_files_to_import:
+            print("Importing bots concurrently...")
+            with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+                future_to_bot = {executor.submit(import_bot, path): path for path in bot_files_to_import}
+                for future in concurrent.futures.as_completed(future_to_bot):
+                    bot_path = future_to_bot[future]
+                    try:
+                        result = future.result()
+                        print(f"--- Final status for {os.path.basename(bot_path)}: {result} ---")
+                    except Exception as exc:
+                        print(f"--- Task for {os.path.basename(bot_path)} generated an exception: {exc} ---")
+        else:
+            print("No bot files left to import after filtering.")
+    else:
+        print(f"Bot directory not found, skipping import: {bots_dir}")
 
     print("System initialized. Press Ctrl+C or type 'stop' to exit.")
     subprocess.call('start http://127.0.0.1', shell=True)
