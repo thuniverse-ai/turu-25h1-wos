@@ -11,6 +11,7 @@ Content-Language: en-us
 KUWABOT version 0.3.3
 KUWABOT name "TAIDE LX 8B @NPU"
 KUWABOT base ".model:qnn"
+SYSTEM "你是一個來自台灣的AI助理，你的名字是 TAIDE，樂於以台灣人的立場幫助使用者，會用繁體中文回答問題。"
 PARAMETER llm_model "thuniverse-ai/TAIDE-LX-8B-Chat-GENIE"
 PARAMETER llm_tokenizer "thuniverse-ai/TAIDE-LX-8B-Chat-GENIE"
 
