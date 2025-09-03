@@ -17,13 +17,19 @@ import numpy as np
 from datetime import datetime
 from pathlib import Path
 from huggingface_hub import hf_hub_download
+from transformers.models.whisper import WhisperConfig
 
-from qai_hub_models.models._shared.whisper.app import WhisperApp
-from qai_hub_models.utils.executable_onnx_model import ExecutableOnnxModel
+from qai_hub_models.models._shared.hf_whisper.app import HfWhisperApp
+from qai_hub_models.utils.onnx_torch_wrapper import (
+    OnnxModelTorchWrapper,
+    OnnxSessionOptions,
+)
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 logger = logging.getLogger(__name__)
+
+MEAN_DECODE_LEN = 200 #224
 
 def parse_model_path(model_path):
     if os.path.isfile(model_path):
@@ -57,7 +63,8 @@ def parse_model_path(model_path):
             if len(model_paths) == 0:
                 raise RuntimeError("Zip file does't contain any model.onnx file.")
             if len(model_paths) > 1:
-                logger.warning(f"Zip file contained multiple model.onnx files. Using the first one: {model_paths[0]}")
+                logger.warning("Zip file contained multiple model.onnx files. Using the first one.")
+            logger.info(f"Model path: {model_paths[0]}")
             model_path = Path(model_paths[0]).resolve()
         except zipfile.BadZipFile:
             logger.error(f"Downloaded file {downloaded_path} is not a valid zip file.")
@@ -76,9 +83,10 @@ class OnnxTranscriber:
     Encapsulation of WhisperS2T process for multi-processing.
     """
 
-    def __init__(self, encoder_path, decoder_path):
+    def __init__(self, encoder_path, decoder_path, hf_model_id):
         self.encoder_path = encoder_path
         self.decoder_path = decoder_path
+        self.hf_model_id = hf_model_id
         self.load_model()
 
     @functools.lru_cache
@@ -95,13 +103,11 @@ class OnnxTranscriber:
         start_time = time.time()
         logger.debug(f"Encoder path: {self.encoder_path}")
         logger.debug(f"Decoder path: {self.decoder_path}")
-        whisper = WhisperApp(
-            ExecutableOnnxModel.OnNPU(parse_model_path(self.encoder_path)),
-            ExecutableOnnxModel.OnNPU(parse_model_path(self.decoder_path)),
-            num_decoder_blocks=6,
-            num_decoder_heads=8,
-            attention_dim=512,
-            mean_decode_len=224,
+        logger.debug(f"HF ID of reference model: {self.hf_model_id}")
+        whisper = HfWhisperApp(
+            OnnxModelTorchWrapper.OnNPU(parse_model_path(self.encoder_path)),
+            OnnxModelTorchWrapper.OnNPU(parse_model_path(self.decoder_path)),
+            self.hf_model_id,
         )
         end_time = time.time()
         logger.debug(f"Model {self.encoder_path}; {self.decoder_path} loaded")

@@ -64,12 +64,10 @@ class SpeechRecognitionExecutor(LLMExecutor):
             help="The compute data type of the model.",
         )
         model_group.add_argument(
-            "--backend", default=self.default_model_backend, help="The model backend."
-        )
-        model_group.add_argument(
-            "--use_onnx",
-            action="store_true",
-            help="Use ONNX as the backend instead of whisperS2T.",
+            "--backend",
+            default=self.default_model_backend,
+            help="The model backend.",
+            choices=["CTranslate2", "TensorRT-LLM", "ONNX"],
         )
         model_group.add_argument(
             "--encoder_path",
@@ -137,12 +135,13 @@ class SpeechRecognitionExecutor(LLMExecutor):
         self.stop = False
 
         # Initialize the pipelines
-        if self.args.use_onnx:
+        if self.args.backend == "ONNX":
             from src.onnx_backend.onnx_transcriber import OnnxTranscriber
 
             self.transcriber = OnnxTranscriber(
                 encoder_path=self.args.encoder_path,
                 decoder_path=self.args.decoder_path,
+                hf_model_id=self.args.model,
             )
         else:
             self.transcriber = WhisperS2tTranscriber()
