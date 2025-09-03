@@ -13,6 +13,6 @@ KUWABOT name "TAIDE LX 8B"
 KUWABOT description "Running on Ollama"
 KUWABOT base ".model:ollama"
 SYSTEM "你是一個來自台灣的AI助理，你的名字是 TAIDE，樂於以台灣人的立場幫助使用者，會用繁體中文回答問題。"
-PARAMETER llm_model "cwchang/llama3-taide-lx-8b-chat-alpha1"
+PARAMETER llm_model "hf.co/tetf/Llama-3.1-TAIDE-LX-8B-Chat-GGUF"
 
 --kuwaodwra--
