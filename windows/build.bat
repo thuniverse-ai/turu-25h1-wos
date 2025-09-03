@@ -201,6 +201,26 @@ call php artisan key:generate --force
 call php artisan migrate --force
 call php artisan db:seed --class=InitSeeder --force
 
+popd
+if exist init.txt (
+    setlocal
+    for /f "tokens=1,2 delims==" %%A in (init.txt) do (
+        set "%%A=%%B"
+    )
+
+    for /f "delims=@ tokens=1" %%E in ("!username!") do (
+        set "name=%%E"
+    )
+
+    pushd "..\src\multi-chat\"
+    php artisan create:admin-user --name=!name! --email=!username! --password=!password!
+    popd
+    del init.txt
+) else (
+    echo init.txt not found. Skipping seeding.
+)
+pushd "..\src\multi-chat"
+
 :: Clean up old storage links and files
 rmdir /Q /S public\storage
 rmdir /Q /S storage\app\public\root\custom
@@ -253,13 +273,12 @@ call src\download_extract.bat %url_ffmpeg% packages\%ffmpeg_folder% packages\. f
 
 REM Install dependency of Mermaid Tool
 where mmdc >nul 2>nul
-if %errorlevel% neq 0 (
+if errorlevel 1 (
     echo Installing @mermaid-js/mermaid-cli...
     call npm.cmd install -g "@mermaid-js/mermaid-cli" --no-audit --no-fund
 ) else (
     for /f "delims=" %%i in ('mmdc --version') do set "MERMAID_VERSION=%%i"
-    REM Optional: if you want to check a specific version, insert it here
-    echo mermaid-cli %MERMAID_VERSION% already installed. Skipping.
+    echo mermaid-cli !MERMAID_VERSION! already installed. Skipping.
 )
 
 for %%i in ("postinstall\*.bat") do (

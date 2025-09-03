@@ -20,6 +20,7 @@ rm -f storage/app/public/root/bot
 rm -f storage/app/public/root/bootstrap/bot
 
 # Recreate storage symlink
+php artisan config:cache
 php artisan storage:link
 
 # Install and audit frontend dependencies
@@ -32,5 +33,4 @@ npm run build
 # Cache Laravel configuration and routes
 php artisan route:cache
 php artisan view:cache
-php artisan config:cache
 php artisan optimize

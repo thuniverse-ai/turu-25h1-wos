@@ -12,7 +12,7 @@ if not "%1"=="" (
 if "!set_version!"=="" (
 	rem Check if nvcc (NVIDIA CUDA Compiler) is available
 	nvcc --version >NUL
-	if !errorlevel! neq 0 (
+	if errorlevel 1 (
 		echo CUDA is not installed
 	) else (
 		for /f "tokens=6" %%v in ('nvcc --version ^| findstr /i "release"') do (

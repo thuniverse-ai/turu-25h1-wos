@@ -6,7 +6,7 @@ setlocal enableDelayedExpansion
 
 :: Check if reg query command is successful
 reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable >nul 2>&1
-if %errorlevel% neq 0 goto :eof
+if errorlevel 1 goto :eof
 
 :: Get ProxyEnable value
 for /f "tokens=3" %%a in ('reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable ^| findstr /i "ProxyEnable"') do set "proxyEnable=%%a"
@@ -25,7 +25,7 @@ for /f "tokens=3" %%a in ('reg query "HKCU\Software\Microsoft\Windows\CurrentVer
 
 :: Check if the ProxyServer does not match the form <scheme>=<proxy>.
 echo !ProxyServer! | findstr "=" >nul
-if %errorlevel% neq 0 (
+if errorlevel 1 (
     :: Use one setting for all protocols
     set "proxyServer=http=!proxyServer!;https=!proxyServer!;ftp=!proxyServer!"
 )

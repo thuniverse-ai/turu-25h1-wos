@@ -9,7 +9,7 @@ cd "%~dp0"
 REM Check for updates
 git fetch
 git status -uno | findstr "behind"
-IF %ERRORLEVEL% EQU 0 (
+IF errorlevel 0 (
     REM Prompt the user for input with default 'Y'
     set "response=Y"
     set /p "response=Do you want to update? (Y/N) [Y]: "
